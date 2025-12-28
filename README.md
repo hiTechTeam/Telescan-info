@@ -222,7 +222,7 @@ Coordinates people discovery:
 - **Ephemeral Data**: No persistent storage of sensitive information
 - **Privacy by Design**: Minimal data collection and retention
 
-[SECURYTY](./SECURITY.md)
+[SECURiTY.md](./SECURITY.md)
 
 ## Privacy
 
