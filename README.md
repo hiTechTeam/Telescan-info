@@ -6,13 +6,13 @@
 
 ![About Telescan](./docs/images/slide1.png)
 
-Telescan — социальный радар, который соединяет физический и цифровый миры.
+Telescan is a social radar that connects the physical and digital worlds.
 
-Приложение обнаруживает людей рядом через Bluetooth Low Energy (BLE) — без GPS и без интернета для самого обнаружения. Оно тихо аккумулирует в фоне информацию о ежедневных пересечениях и помогает осознанно находить паттерны и людей, с которыми стоит установить контакт.
+The app detects people nearby via Bluetooth Low Energy (BLE) - without GPS and without the Internet for detection itself. It quietly accumulates information about daily intersections in the background and helps you consciously find patterns and people with whom you should establish contact.
 
-Каждый день мы пересекаемся с сотнями людей — в транспорте, кафе, офисе или на мероприятиях, — но большинство этих встреч остаётся невидимыми. Telescan превращает их в возможности, сохраняя при этом полную приватность.
+Every day we cross paths with hundreds of people - in transport, cafes, offices or at events - but most of these meetings remain invisible. Telescan turns them into opportunities while maintaining complete privacy.
 
-Telescan работает как расширение Telegram: пользователи привязывают свой профиль через бота, а приложение позволяет безопасно обмениваться профилями и переходить в чат — всё с акцентом на оффлайн-взаимодействие и контроль пользователя.
+Telescan works as an extension of Telegram: users link their profile via a bot, and the app allows secure profile sharing and chat - all with an emphasis on offline interaction and user control.
 
 **[Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS.git)**
 
