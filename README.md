@@ -292,7 +292,7 @@ run simulator and past command in terminal
 
 ## Roadmap
 
-Планы развития проекта [ROADMAP.md](./ROADMAP.md)
+Project development plans [ROADMAP.md](./ROADMAP.md)
 
 ## License
 
