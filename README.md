@@ -6,7 +6,13 @@
 
 ![About Telescan](./docs/images/slide1.png)
 
-Telescan is an iOS app that allows users to find people nearby and connect with them through their Telegram profiles using Bluetooth Low Energy (BLE). It works as a Telegram extension, allowing secure sharing of profiles without the need for a direct Internet connection to be discovered.
+Telescan — социальный радар, который соединяет физический и цифровый миры.
+
+Приложение обнаруживает людей рядом через Bluetooth Low Energy (BLE) — без GPS и без интернета для самого обнаружения. Оно тихо аккумулирует в фоне информацию о ежедневных пересечениях и помогает осознанно находить паттерны и людей, с которыми стоит установить контакт.
+
+Каждый день мы пересекаемся с сотнями людей — в транспорте, кафе, офисе или на мероприятиях, — но большинство этих встреч остаётся невидимыми. Telescan превращает их в возможности, сохраняя при этом полную приватность.
+
+Telescan работает как расширение Telegram: пользователи привязывают свой профиль через бота, а приложение позволяет безопасно обмениваться профилями и переходить в чат — всё с акцентом на оффлайн-взаимодействие и контроль пользователя.
 
 **[Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS.git)**
 
@@ -47,6 +53,7 @@ Telescan is an iOS app that allows users to find people nearby and connect with 
     - [BLE Issues](#ble-issues)
     - [Network Issues](#network-issues)
     - [Telegram Integration](#telegram-integration)
+  - [Roadmap](#roadmap)
   - [License](#license)
   - [Contact](#contact)
 
@@ -215,6 +222,8 @@ Coordinates people discovery:
 - **Ephemeral Data**: No persistent storage of sensitive information
 - **Privacy by Design**: Minimal data collection and retention
 
+[SECURYTY](./SECURITY.md)
+
 ## Privacy
 
 Telescan is designed with privacy as a core principle:
@@ -224,6 +233,8 @@ Telescan is designed with privacy as a core principle:
 - Profile data is fetched on-demand and cached briefly
 - Users control when their device is discoverable
 - No tracking or analytics
+
+[PRIVACY_POLICY.md](./PRIVACY_POLICY.md)
 
 ## Contributing
 
@@ -249,8 +260,10 @@ Currently, no automated tests are implemented.
 In the future, you can run tests in Xcode:
 
 ```bash
-xcodebuild test -project TelescaniOS.xcodeproj -scheme Telescan
+xcodebuild test -project TelescaniOS.xcodeproj -scheme Telescan -destination 'platform=iOS Simulator'
 ```
+
+run simulator and past command in terminal
 
 ### Building for Release
 
@@ -276,6 +289,10 @@ xcodebuild test -project TelescaniOS.xcodeproj -scheme Telescan
 - Verify Telegram account permissions
 
 **All possible faults will be located in** [KNOWN_ISSUES.md](./KNOWN_ISSUES.md)
+
+## Roadmap
+
+Планы развития проекта [ROADMAP.md](./ROADMAP.md)
 
 ## License
 
