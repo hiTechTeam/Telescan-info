@@ -12,6 +12,44 @@ Telescan is an iOS app that allows users to find people nearby and connect with 
 
 \*Development also planned for Android
 
+## Table of Contents
+
+- [Telescan](#telescan)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Data transmitted](#data-transmitted)
+    - [Logo](#logo)
+  - [Architecture](#architecture)
+    - [1. Telegram Bot](#1-telegram-bot)
+    - [2. iOS Application](#2-ios-application)
+    - [3. Backend API](#3-backend-api)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+    - [For Users](#for-users)
+    - [For Developers](#for-developers)
+  - [Usage](#usage)
+    - [First Time Setup](#first-time-setup)
+    - [Discovering People](#discovering-people)
+    - [Managing Your Profile](#managing-your-profile)
+  - [Project Structure](#project-structure)
+  - [Key Components](#key-components)
+    - [BLEManager](#blemanager)
+    - [FetchService](#fetchservice)
+    - [PeopleViewModel](#peopleviewmodel)
+  - [Security](#security)
+  - [Privacy](#privacy)
+  - [Contributing](#contributing)
+  - [Development Setup](#development-setup)
+    - [Dependencies](#dependencies)
+    - [Testing](#testing)
+    - [Building for Release](#building-for-release)
+  - [Troubleshooting](#troubleshooting)
+    - [BLE Issues](#ble-issues)
+    - [Network Issues](#network-issues)
+    - [Telegram Integration](#telegram-integration)
+  - [License](#license)
+  - [Contact](#contact)
+
 ## Features
 
 - **Proximity-based Discovery**: Uses BLE to detect nearby users with Telegram profiles
@@ -226,6 +264,8 @@ xcodebuild test -project TelescaniOS.xcodeproj -scheme Telescan
 
 - Ensure Bluetooth is enabled in iOS Settings
 - Test on physical devices (simulator doesn't support BLE)
+
+All possible faults will be located in [KNOWN_ISSUES.md](./KNOWN_ISSUES.md)
 
 ### Network Issues
 
