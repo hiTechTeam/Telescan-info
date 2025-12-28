@@ -18,7 +18,7 @@ Telescan is an iOS app that allows users to find people nearby and connect with 
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Data transmitted](#data-transmitted)
-    - [Logo](#logo)
+  - [Logo](#logo)
   - [Architecture](#architecture)
     - [1. Telegram Bot](#1-telegram-bot)
     - [2. iOS Application](#2-ios-application)
@@ -65,7 +65,7 @@ Telescan is an iOS app that allows users to find people nearby and connect with 
 
 Data is being transmitted to the user in the visible area of the device.
 
-### Logo
+## Logo
 
 ![Logos](./docs/images/logos.png)
 
@@ -265,8 +265,6 @@ xcodebuild test -project TelescaniOS.xcodeproj -scheme Telescan
 - Ensure Bluetooth is enabled in iOS Settings
 - Test on physical devices (simulator doesn't support BLE)
 
-All possible faults will be located in [KNOWN_ISSUES.md](./KNOWN_ISSUES.md)
-
 ### Network Issues
 
 - Check internet connectivity
@@ -276,6 +274,8 @@ All possible faults will be located in [KNOWN_ISSUES.md](./KNOWN_ISSUES.md)
 - Ensure you have a Telegram username set
 - Check that the generated code is entered correctly
 - Verify Telegram account permissions
+
+**All possible faults will be located in** [KNOWN_ISSUES.md](./KNOWN_ISSUES.md)
 
 ## License
 
