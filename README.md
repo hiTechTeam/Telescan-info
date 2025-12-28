@@ -8,6 +8,8 @@
 
 Telescan is an iOS app that allows users to find people nearby and connect with them through their Telegram profiles using Bluetooth Low Energy (BLE). It works as a Telegram extension, allowing secure sharing of profiles without the need for a direct Internet connection to be discovered.
 
+**[Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS.git)**
+
 \*Development also planned for Android
 
 ## Features
