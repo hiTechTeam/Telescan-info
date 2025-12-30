@@ -14,17 +14,20 @@ Every day we cross paths with hundreds of people - in transport, cafes, offices 
 
 Telescan works as an extension of Telegram: users link their profile via a bot, and the app allows secure profile sharing and chat - all with an emphasis on offline interaction and user control.
 
-**[Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS.git)** - iOS Application
-**[Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app.git)** - Telegram bot
-**[Telescan-api](https://github.com/hiTechTeam/Telescan-api.git)** - Backend REST API
-**[Telescan-db](https://github.com/hiTechTeam/Telescan-db.git)** - Database
-**[Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx.git)** - Reverse-proxy
+## Related Projects
+
+- **[Telescan-info](https://github.com/hiTechTeam/Telescan-info)** - Main project overview
+- **[Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS.git)** - iOS Application
+- **[Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app.git)** - Telegram bot
+- **[Telescan-api](https://github.com/hiTechTeam/Telescan-api.git)** - Backend REST API
+- **[Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx.git)** - Reverse-proxy
 
 \*Development also planned for Android
 
 ## Table of Contents
 
 - [Telescan](#telescan)
+  - [Related Projects](#related-projects)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Data transmitted](#data-transmitted)
