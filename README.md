@@ -21,6 +21,7 @@ Telescan works as an extension of Telegram: users link their profile via a bot, 
 - **[Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app.git)** - Telegram bot
 - **[Telescan-api](https://github.com/hiTechTeam/Telescan-api.git)** - Backend REST API
 - **[Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx.git)** - Reverse-proxy
+- **[Telescan-db](https://github.com/hiTechTeam/Telescan-db.git)** - Database config
 
 \*Development also planned for Android
 
