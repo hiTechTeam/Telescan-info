@@ -14,7 +14,11 @@ Every day we cross paths with hundreds of people - in transport, cafes, offices 
 
 Telescan works as an extension of Telegram: users link their profile via a bot, and the app allows secure profile sharing and chat - all with an emphasis on offline interaction and user control.
 
-**[Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS.git)**
+**[Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS.git)** - iOS Application
+**[Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app.git)** - Telegram bot
+**[Telescan-api](https://github.com/hiTechTeam/Telescan-api.git)** - Backend REST API
+**[Telescan-db](https://github.com/hiTechTeam/Telescan-db.git)** - Database
+**[Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx.git)** - Reverse-proxy
 
 \*Development also planned for Android
 
@@ -307,3 +311,19 @@ This project is licensed under the [MIT License](./LICENSE).
 ---
 
 _For detailed technical information, see [WHITEPAPER.md](./WHITEPAPER.md)_
+
+General
+
+General project chat. Here you can discuss everything related to Telescan: news, impressions, random ideas, offtopic. The main place for live community communication.
+
+Ideas
+
+Suggest new features and improvements. Share ideas on how to make Telescan better: new features, UX improvements, use cases. The best ideas may end up on the roadmap.
+
+Q&A
+
+Questions and answers. Ask questions about setup, use, development, or any aspect of the project. This is where users and developers help each other.
+
+Help
+
+Help with problems. If you encounter bugs, build errors, problems with BLE, or something doesn’t work, create a topic here. Get help from the community and maintainers.

@@ -1,4 +1,4 @@
-#Telescan Technical document
+# Telescan Whitepaper
 
 ## Abstract
 

@@ -3,8 +3,6 @@
 The Telescan project's roadmap for future features, improvements, and long-term vision is described here.  
 The Roadmap will be updated as we progress, community feedback, and new ideas.
 
----
-
 ## Current state
 
 MVP is ready:
@@ -13,15 +11,11 @@ MVP is ready:
 - Profile linking via Telegram bot
 - Profile loading and clean, intuitive interface.
 
----
-
 **Legend of status**  
 **0** — Not running  
 **1** - Scheduled/Assigned  
 **2** — In development  
 **3** - Completed
-
----
 
 ## Planned features
 
