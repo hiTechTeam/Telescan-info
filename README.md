@@ -315,19 +315,3 @@ This project is licensed under the [MIT License](./LICENSE).
 ---
 
 _For detailed technical information, see [WHITEPAPER.md](./WHITEPAPER.md)_
-
-General
-
-General project chat. Here you can discuss everything related to Telescan: news, impressions, random ideas, offtopic. The main place for live community communication.
-
-Ideas
-
-Suggest new features and improvements. Share ideas on how to make Telescan better: new features, UX improvements, use cases. The best ideas may end up on the roadmap.
-
-Q&A
-
-Questions and answers. Ask questions about setup, use, development, or any aspect of the project. This is where users and developers help each other.
-
-Help
-
-Help with problems. If you encounter bugs, build errors, problems with BLE, or something doesn’t work, create a topic here. Get help from the community and maintainers.
