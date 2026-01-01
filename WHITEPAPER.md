@@ -372,7 +372,7 @@ Telescan estimates the distance to another device based on the strength of the B
 
 **Formula (simplified):**
 
-\[\text{distance} = 10^{\frac{\text{TX} - \text{RSSI}}{10 \cdot n}}\]
+`distance = 10^((TX - RSSI) / (10 * n))`
 
 Where:
 

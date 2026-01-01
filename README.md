@@ -111,7 +111,7 @@ Telescan consists of three main components:
 
 ## Requirements
 
-- iOS 16.0+
+- iOS 17.0+
 - Xcode 15.0+
 - Swift 5.9+
 - Telegram account
