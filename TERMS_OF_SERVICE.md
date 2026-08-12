@@ -1,5 +1,7 @@
 # Telescan Terms of Service
 
+**Public page:** [telescan.space/terms](https://telescan.space/terms)
+
 **Effective date:** August 12, 2026
 
 These Terms govern your use of the Telescan iOS app, Telegram bot, API, and related services. By continuing in the app or using the service, you agree to these Terms and the [Privacy Policy](./PRIVACY_POLICY.md). If you do not agree, do not use Telescan.

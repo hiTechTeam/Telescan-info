@@ -1,5 +1,7 @@
 # Privacy Policy for Telescan
 
+**Public page:** [telescan.space/privacy](https://telescan.space/privacy)
+
 **Effective date:** August 12, 2026
 
 Telescan is an iOS app for discovering nearby users and opening the public Telegram profiles they choose to share. This policy describes the data used by the Telescan app, bot, API, database, and profile-photo storage. Use of the service is also governed by the [Terms of Service](./TERMS_OF_SERVICE.md).
