@@ -20,13 +20,13 @@ Telescan works as an extension of Telegram. A user links a Telegram profile thro
 
 ## Ecosystem
 
-| Project | Purpose |
-| --- | --- |
-| [Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS) | iOS application and BLE discovery |
-| [Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app) | Telegram registration bot |
-| [Telescan-api](https://github.com/hiTechTeam/Telescan-api) | Profile and account API |
-| [Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx) | Reverse proxy |
-| [Telescan-db](https://github.com/hiTechTeam/Telescan-db) | Database configuration |
+| Project                                                            | Purpose                           |
+| ------------------------------------------------------------------ | --------------------------------- |
+| [Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS)         | iOS application and BLE discovery |
+| [Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app) | Telegram registration bot         |
+| [Telescan-api](https://github.com/hiTechTeam/Telescan-api)         | Profile and account API           |
+| [Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx)     | Reverse proxy                     |
+| [Telescan-db](https://github.com/hiTechTeam/Telescan-db)           | Database configuration            |
 
 Android support is planned. Platform-specific setup and development instructions live in the corresponding repository.
 
@@ -48,4 +48,5 @@ Users control when they are discoverable and can permanently delete their Telesc
 
 ## License and contact
 
-Telescan is available under the [MIT License](./LICENSE). Contact [r66cha](https://github.com/r66cha) via [Telegram](https://t.me/ruslanrocketman1) or [email](mailto:r66cha@gmail.com).
+Telescan is available under the [MIT License](./LICENSE).
+Contact [r66cha](https://github.com/r66cha) via [Telegram](https://t.me/ruslanrocketman1) or [email](mailto:r66cha@gmail.com).
