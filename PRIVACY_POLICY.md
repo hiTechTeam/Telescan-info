@@ -1,6 +1,6 @@
 # Privacy Policy for Telescan
 
-**Effective Date:** December 25, 2025
+**Effective Date:** August 12, 2026
 
 ## Introduction
 
@@ -60,9 +60,21 @@ We implement appropriate technical and organizational measures to protect your i
 
 ## Data Retention
 
-- **Profile Data**: Stored on our servers only as long as your Telegram account remains active and you use the service.
+- **Profile Data**: Your Telegram ID, display name, username, profile photo, and hashed authentication code are stored only while your Telescan account remains active.
 - **Cached Data**: Profile information is cached locally on your device for brief periods (typically minutes) and automatically cleared.
-- **Authentication Data**: The hashed codes are saved after successful authentication.
+- **Authentication Data**: Authentication codes are stored on our servers only as SHA-256 hashes and are deleted with the Telescan account.
+
+### Account and Data Deletion
+
+You can permanently delete your Telescan account directly in the App by opening your profile and selecting **Delete account**. After you confirm the request, deletion is processed immediately. You do not need to contact customer support.
+
+Deleting your Telescan account permanently removes:
+
+- your Telegram ID, display name, username, and hashed authentication code from our database;
+- your current profile photo and any earlier profile-photo versions stored in our cloud storage;
+- locally stored Telescan profile data, the local profile photo, network cache, image cache, and proximity-discovery state from the device.
+
+Account deletion cannot be undone. It deletes only your Telescan account and Telescan data; it does not delete or otherwise modify your Telegram account. If applicable law requires us to retain specific information, we will retain only the required information for the legally mandated period and disclose that requirement to affected users.
 
 ## Your Rights and Choices
 
@@ -70,7 +82,7 @@ You have the following rights regarding your data:
 
 - **Control Discovery**: You can enable or disable BLE scanning at any time.
 - **Profile Management**: You can update your profile photo through the app.
-- **Data Deletion**: Contact us to request deletion of your profile data from our servers.
+- **Data Deletion**: Permanently delete your Telescan account and associated personal data from the profile screen in the App.
 - **Withdraw Consent**: You can stop using the app and delete it from your device.
 
 ## Children's Privacy
