@@ -1,117 +1,46 @@
 # Security Policy
 
-## Supported versions
+## Reporting a vulnerability
 
-We actively support the following versions with security updates:
+Please do not disclose security vulnerabilities in a public GitHub issue or discussion. Send a private report to [r66cha@gmail.com](mailto:r66cha@gmail.com) with:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
-| < 1.0   | :x:                |
+- a clear description and affected component;
+- reproducible steps or proof of concept;
+- expected impact;
+- suggested mitigation, if available.
 
-## Vulnerability message
+We aim to acknowledge reports within 48 hours, investigate confirmed issues, provide progress updates, and coordinate disclosure after a fix is available. Timelines depend on severity and complexity.
 
-We take safety seriously. If you discover a security vulnerability in Telescan, please help us by reporting it responsibly.
+Please avoid accessing data without permission, disrupting the service, degrading availability, or violating user privacy while testing. Researchers may be credited with their permission.
 
-### How to report
+## Current security model
 
-**Please DO NOT report security vulnerabilities via GitHub public releases.**
+- API traffic is served over HTTPS and permits TLS 1.2 and TLS 1.3.
+- The bot stores authentication codes as SHA-256 hashes; the iOS app hashes a code before sending it to the API.
+- Account deletion verifies both the Telegram ID and authentication-code hash.
+- Profile photos and account records are removed by the in-app deletion flow.
+- BLE access requires iOS permission, and users explicitly control discoverability.
+- The app contains no advertising or third-party analytics SDKs.
 
-Instead, report security vulnerabilities by email:
+## BLE design
 
-- **Email**: r66cha@gmail.com
+Telescan advertises a custom 128-bit BLE service UUID. The Telegram ID may be present in the advertisement local name; if it is unavailable there, another device can connect to the service and read the identity characteristic. Devices that have not been seen for 20 seconds are removed from the nearby list.
 
-Include the following information in your report:
+BLE advertisements are public to devices in radio range. A nearby observer can capture, replay, or manipulate identifiers and signal strength. RSSI is only an approximate distance signal and is not proof of physical proximity or identity.
 
-- Clear description of the vulnerability
-- Steps to reproduce the problem
-- Potential impact and severity
-- Any proposed fixes or mitigations.
+## Known limitations
 
-### What to expect
+Telescan currently uses an eight-character code rather than an expiring session or access token. The original code is stored locally in iOS `UserDefaults`, and possession of it may allow account access until the code is updated.
 
-- **Confirmation**: We will confirm receipt of your report within 48 hours.
-- **Investigation**: We will study and verify the vulnerability.
-- **Updates**: We will provide regular updates on our progress (at least weekly).
-- **Resolution**: We will work to resolve confirmed vulnerabilities within a reasonable time frame.
-- **Disclosure**: We will confirm the disclosure with you after corrections are made.
+Hashing protects the original code in server storage but does not by itself prevent replay. Public profile lookup uses a Telegram ID and does not require authentication. Some profile-photo operations also rely on Telegram ID without a separate authorization token. API-level rate limiting is not currently implemented.
 
-## Security measures
+These limitations mean Telescan should not be used to share sensitive or private information. Planned authentication hardening belongs in the [Roadmap](./ROADMAP.md).
 
-### Data protection
+## User guidance
 
-- **Encryption**: All network connections use TLS 1.3.
-- **Hashing**: authentication codes are hashed using the [SHA-256](https://en.wikipedia.org/wiki/SHA-2) protocol.
-- **No plaintext storage**: Sensitive data is never stored in plaintext.
+- Enable discoverability only when you want to be visible nearby.
+- Keep your authentication code private and update it through [@tgtelescan_bot](https://t.me/tgtelescan_bot) if it may be compromised.
+- Keep iOS, Telescan, and Telegram updated.
+- Avoid using the app on a jailbroken device.
 
-### Bluetooth Security
-
-- **Service UUID**: Uses standard BLE advertising with a custom service UUID (FFF0).
-- **No GATT services**: Pure ad-based discovery, no BLE communication.
-- **Manage timeouts**: Automatically clear outdated device connections.
-- **Permission Based**: Requires explicit user permission to access Bluetooth.
-
-### API Security
-
-- **HTTPS Only**: All API endpoints require secure connections.
-- **Rate Limiting**: The backend implements a rate limit to prevent abuse.
-- **Validation of input data**: All input data is checked and processed.
-- **Minimum Data**: The API returns only the required profile information.
-
-### Client Security
-
-- **Code Signing**: The iOS app is signed with Apple code.
-- **App Store Review**: All releases undergo Apple security review.
-- **No third party analytics**: Tracking and analytics libraries are not included.
-- **Minimum permissions**: Only required iOS permissions (Bluetooth, network) are requested.
-
-## Known security considerations
-
-### Bluetooth limitations
-
-- BLE signals can be intercepted in close proximity (within ~30 meters)
-- The distance estimate based on RSSI is approximate and can be manipulated.
-- No end-to-end encryption for profile data transfer (depends on HTTPS)
-
-### Authentication Design
-
-- Code-based authentication is vulnerable to [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing)
-- Hashed codes prevent replay attacks, but do not provide mutual authentication.
-- Telegram integration is based on the Telegram security model.
-
-## Security guidelines for users
-
-###Using the app
-
-- Turn on scanning only when you want to be detected.
-- Be careful when disclosing personal information.
-- Update your code if it is stolen in [@tgtelescan_bot](https://t.me/tgtelescan_bot) and then the previous code will become invalid and the attacker will not be able to broadcast your profile.
-
-### Network Security
-
-- Use reliable Wi-Fi networks.
-- Avoid using the application on jailbroken devices.
-- Keep the Telegram application up to date and secure.
-
-## Responsible Disclosure
-
-We ask you:
-
-- Give us a reasonable time to correct problems before they are publicly disclosed.
-- Avoid accessing or changing user data without permission.
-- Do not perform denial of service attacks or degrade service quality.
-- Respect user privacy and do not collect data for malicious purposes.
-
-## Contact
-
-For questions or concerns regarding security:
-
-- **General support**: r66cha@gmail.com
-
-## Recognition
-
-We value the security researchers who help keep Telescan secure. With your permission, we may publicly recognize your contributions to our safety.
-
----
-
-_This Security Policy is part of the Telescan project and is governed by the [MIT License](./LICENSE)._
+Supported releases and fixes are tracked in the relevant component repositories. General security questions can be sent to [r66cha@gmail.com](mailto:r66cha@gmail.com).

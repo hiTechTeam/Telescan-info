@@ -1,37 +1,18 @@
-## Known issues and device compatibility
+# Known Issues
 
-### Bluetooth Low Energy (BLE) detection issues on iPhone 17 series (iOS 26.x)
+**Last reviewed:** August 12, 2026
 
-**Device Affected**: iPhone 17, iPhone 17 Pro, iPhone 17 Pro Max, iPhone 17 Air.  
-**iOS Versions**: iOS 26.0 - 26.2 (as of December 2025).
+## BLE reliability on newer iPhone models
 
-**Symptoms**:
+Some tests have shown intermittent discovery or advertising on iPhone 17, iPhone Air, and iPhone 17 Pro devices. Symptoms include nearby users appearing late, disappearing unexpectedly, or not being discovered.
 
-- Nearby Telescan users are not detected during scanning.
-- The device itself is not visible to other Telescan users (advertising is buggy or unstable).
-- Works great on older models (iPhone 11, 14, iPad, etc.) with the same iOS version.
+Apple documented an iOS 26.0.1 issue in which Wi-Fi and Bluetooth could occasionally disconnect on these models. This supports a possible system-level factor, but it does not establish the cause of every CoreBluetooth or Telescan failure. See [About iOS 26 Updates](https://support.apple.com/123075).
 
-**Reason**:
-This is a **known system level Bluetooth issue** in the iPhone 17 series due to the new **N1 Bluetooth/Wi-Fi chip** and bugs in iOS 26.x.  
-Apple acknowledged similar Bluetooth connectivity issues (disconnects, audio stuttering, CarPlay issues) in the release notes for iOS 26.0.1 and later updates. Many users and developers are reporting issues specific to BLE (CoreBluetooth detection/advertising instability), especially in early builds of iOS 26.
+Before reporting a problem:
 
-This issue **doesn't** occur on older iPhone models running the same version of iOS.
+1. Install the latest available iOS and Telescan versions.
+2. Confirm Bluetooth permission and restart Bluetooth or the device.
+3. Test with two physical devices at close range; the iOS Simulator cannot test BLE discovery.
+4. Record both device models, iOS versions, app version, and whether scanning or advertising failed.
 
-**Current Status** (December 28, 2025):
-
-- Partial fixes in iOS 26.0.1 and 26.1 resolve some outages, but **BLE detection remains unreliable** for many iOS 26.2 users.
-- Developer reports highlight improvements in iOS 26.2 beta and the upcoming 26.3 (expected January-February 2026).
-
-**Workarounds** (limited effectiveness):
-
-- Reset network settings: “Settings” → “General” → “Transfer or reset iPhone” → “Reset” → “Reset network settings”.
-- Reboot your device.
-- Temporarily turn off nearby Apple Watches (they actively use BLE channels).
-- Test older iPhone models for development.
-
-**Recommendation**:
-For reliable testing and use, use iPhone 14 or earlier models until Apple releases a full fix (likely iOS 26.3).
-
-We monitor Apple updates and developer forums. This section will be updated when the issue is resolved.
-
-If you encounter this issue, please report it through Apple Feedback Assistant to speed up the resolution.
+Report reproducible Telescan problems in the relevant repository. For suspected iOS defects, also use Apple Feedback Assistant.

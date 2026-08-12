@@ -1,88 +1,24 @@
 # Telescan Roadmap
 
-The Telescan project's roadmap for future features, improvements, and long-term vision is described here.  
-The Roadmap will be updated as we progress, community feedback, and new ideas.
+Telescan currently provides iOS-to-iOS BLE discovery, Telegram-based registration, shared profiles, approximate distance, profile-photo management, and in-app account deletion.
 
-## Current state
+## Priorities
 
-MVP is ready:
+| Area | Direction | Status |
+| --- | --- | --- |
+| Security | Expiring credentials, authenticated profile changes, and API rate limiting | Planned |
+| BLE | Improve background reliability and energy use within iOS constraints | Research |
+| Protocol | Document and stabilize a cross-platform BLE protocol | Planned |
+| Android | Build an interoperable Android client | Planned |
+| Quality | Expand automated API, bot, BLE, and UI tests | In progress |
+| Product | Publish a focused landing page and user documentation | Planned |
 
-- Offline detection via BLE
-- Profile linking via Telegram bot
-- Profile loading and clean, intuitive interface.
+## Ideas under evaluation
 
-**Legend of status**  
-**0** — Not running  
-**1** - Scheduled/Assigned  
-**2** — In development  
-**3** - Completed
+Event-oriented discovery and temporary local interactions may be explored after the core protocol, privacy model, and authentication are stable.
 
-## Planned features
+Features that require encounter history, compatibility scoring, analytics, persistent chats, or AI recommendations are not part of the current privacy model. They would require a separate design review, explicit consent, retention controls, and updated documentation before development.
 
-### Protocols
+## Contributing
 
-**Status** 0  
-Cross-platform BLE discovery protocol (iOS ↔ Android)
-
-### Chats
-
-**Status** 0  
-Temporary P2P chat (exists only while devices are in range of BLE)
-
-**Status** 0  
-Standard P2P chat (persistent, over the Internet)
-
-**Status** 0  
-Standard group chat
-
-**Status** 0  
-Open local chat for everyone within range (ideal for events, coworking spaces, campuses)
-
-### BLE background
-
-**Status** 0  
-Detection and notifications with screen off
-
-**Status** 0  
-Intelligent Energy Saving Scanning
-
-### Android version
-
-**Status** 0  
-Full cross-platform support
-
-### AI filters and analytics (Premium)
-
-**Status** 0  
-Smart recommendations based on compatibility and meeting frequency
-
-**Status** 0  
-Personalized sorting in the People Nearby list
-
-### Website
-
-**Status** 0  
-Official telescan.org (landing page, documentation, community)
-
----
-
-## Long term vision
-
-- Deep integration with real events (conferences, festivals, universities)
-- Partnership with organizers for signature local experiences
-- Advanced analysis of offline patterns (who you regularly cross paths with)
-- Expansion to new platforms and use cases.
-
----
-
-## How to help
-
-The project is completely open source - contributions of any kind are welcome: code, ideas, testing, design, translation.
-
-Especially valuable now:
-
-- Android development and testing.
-- Background BLE optimization.
-- Feedback on monetization and UX
-
-Thanks to everyone who follows and supports Telescan! 🚀
+The most useful contributions are security review, testing on physical devices, BLE reliability research, Android protocol work, accessibility, design, and translation. Open an issue in the relevant repository before starting a large change.
