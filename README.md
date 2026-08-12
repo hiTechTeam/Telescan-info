@@ -24,11 +24,11 @@ Telescan works as an extension of Telegram: users link their profile via a bot, 
 
 \*Development also planned for Android
 
-## Table of Contents
+<details>
+<summary><strong>Table of Contents</strong></summary>
 
 - [Telescan](#telescan)
   - [Related Projects](#related-projects)
-  - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Data transmitted](#data-transmitted)
   - [Logo](#logo)
@@ -63,6 +63,8 @@ Telescan works as an extension of Telegram: users link their profile via a bot, 
   - [Roadmap](#roadmap)
   - [License](#license)
   - [Contact](#contact)
+
+</details>
 
 ## Features
 
