@@ -8,11 +8,13 @@ Telescan is an iOS app for discovering nearby users and opening the public Teleg
 
 When you register through the Telescan Telegram bot, the service receives your Telegram ID, first name, username, and current public profile photo from Telegram. The bot generates an eight-character authentication code and stores only its SHA-256 hash on the server. The original code is shown to you and may be stored locally by the iOS app so it can identify your account.
 
+You may replace the profile photo by taking a new photo with the camera or selecting an image through the system photo picker. Telescan accesses only the image you choose, resizes and compresses it on the device, then uploads a copy to Telescan cloud storage. Camera and photo-library access occur only when you use these controls.
+
 The service stores the following account data while your Telescan account is active:
 
 - Telegram ID, first name, and username;
 - hashed authentication code;
-- a copy of your profile photo in Telescan cloud storage.
+- a copy of your Telegram or user-selected profile photo in Telescan cloud storage.
 
 During discovery, the app broadcasts your Telegram ID over Bluetooth Low Energy (BLE). Nearby Telescan devices use that ID to request your shared profile from the API. BLE signal strength and approximate distance are processed locally and are not sent to the Telescan server.
 

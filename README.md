@@ -1,6 +1,6 @@
 # Telescan
 
-[![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org)
+[![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org)
 [![iOS](https://img.shields.io/badge/iOS-17.6+-blue.svg)](https://developer.apple.com/ios/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
@@ -8,7 +8,7 @@
 
 Telescan is a social radar for discovering people nearby. It uses Bluetooth Low Energy (BLE) to detect other Telescan users without collecting GPS coordinates or sending proximity measurements to the server.
 
-Telescan works as an extension of Telegram. A user links a Telegram profile through the Telescan bot, chooses when to become discoverable, and can open a nearby person's public profile directly in Telegram. BLE discovery works locally; an internet connection is used only to register and load profile information.
+Telescan works as an extension of Telegram. A user links a Telegram profile through the Telescan bot, chooses when to become discoverable, and can open a nearby person's public profile directly in Telegram. BLE discovery works locally; profile loading, photo management, and account deletion require an internet connection.
 
 ## How it works
 
