@@ -1,318 +1,51 @@
 # Telescan
 
 [![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org)
-[![iOS](https://img.shields.io/badge/iOS-17.0+-blue.svg)](https://developer.apple.com/ios/)
+[![iOS](https://img.shields.io/badge/iOS-17.6+-blue.svg)](https://developer.apple.com/ios/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 ![About Telescan](./docs/images/slide1.png)
 
-Telescan is a social radar that connects the physical and digital worlds.
+Telescan is a social radar for discovering people nearby. It uses Bluetooth Low Energy (BLE) to detect other Telescan users without collecting GPS coordinates or sending proximity measurements to the server.
 
-The app detects people nearby via Bluetooth Low Energy (BLE) - without GPS and without the Internet for detection itself. It quietly accumulates information about daily intersections in the background and helps you consciously find patterns and people with whom you should establish contact.
+Telescan works as an extension of Telegram. A user links a Telegram profile through the Telescan bot, chooses when to become discoverable, and can open a nearby person's public profile directly in Telegram. BLE discovery works locally; an internet connection is used only to register and load profile information.
 
-Every day we cross paths with hundreds of people - in transport, cafes, offices or at events - but most of these meetings remain invisible. Telescan turns them into opportunities while maintaining complete privacy.
+## How it works
 
-Telescan works as an extension of Telegram: users link their profile via a bot, and the app allows secure profile sharing and chat - all with an emphasis on offline interaction and user control.
+1. Get an authentication code from [@tgtelescan_bot](https://t.me/tgtelescan_bot) and enter it in the iOS app.
+2. Enable discovery to advertise your Telegram ID and detect nearby Telescan users over BLE.
+3. Select a person to view their shared profile and open it in Telegram.
 
-## Related Projects
+![Data transmitted between nearby devices](./docs/images/slide2.png)
 
-- **[Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS.git)** - iOS Application
-- **[Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app.git)** - Telegram bot
-- **[Telescan-api](https://github.com/hiTechTeam/Telescan-api.git)** - Backend REST API
-- **[Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx.git)** - Reverse-proxy
-- **[Telescan-db](https://github.com/hiTechTeam/Telescan-db.git)** - Database config
+## Ecosystem
 
-\*Development also planned for Android
+| Project | Purpose |
+| --- | --- |
+| [Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS) | iOS application and BLE discovery |
+| [Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app) | Telegram registration bot |
+| [Telescan-api](https://github.com/hiTechTeam/Telescan-api) | Profile and account API |
+| [Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx) | Reverse proxy |
+| [Telescan-db](https://github.com/hiTechTeam/Telescan-db) | Database configuration |
 
-<details>
-<summary><strong>Table of Contents</strong></summary>
-
-- [Telescan](#telescan)
-  - [Related Projects](#related-projects)
-  - [Features](#features)
-  - [Data transmitted](#data-transmitted)
-  - [Logo](#logo)
-  - [Architecture](#architecture)
-    - [1. Telegram Bot](#1-telegram-bot)
-    - [2. iOS Application](#2-ios-application)
-    - [3. Backend API](#3-backend-api)
-  - [Requirements](#requirements)
-  - [Installation](#installation)
-    - [For Users](#for-users)
-    - [For Developers](#for-developers)
-  - [Usage](#usage)
-    - [First Time Setup](#first-time-setup)
-    - [Discovering People](#discovering-people)
-    - [Managing Your Profile](#managing-your-profile)
-  - [Project Structure](#project-structure)
-  - [Key Components](#key-components)
-    - [BLEManager](#blemanager)
-    - [FetchService](#fetchservice)
-    - [PeopleViewModel](#peopleviewmodel)
-  - [Security](#security)
-  - [Privacy](#privacy)
-  - [Contributing](#contributing)
-  - [Development Setup](#development-setup)
-    - [Dependencies](#dependencies)
-    - [Testing](#testing)
-    - [Building for Release](#building-for-release)
-  - [Troubleshooting](#troubleshooting)
-    - [BLE Issues](#ble-issues)
-    - [Network Issues](#network-issues)
-    - [Telegram Integration](#telegram-integration)
-  - [Roadmap](#roadmap)
-  - [License](#license)
-  - [Contact](#contact)
-
-</details>
-
-## Features
-
-- **Proximity-based Discovery**: Uses BLE to detect nearby users with Telegram profiles
-- **Telegram Integration**: Linking to existing Telegram accounts
-- **Privacy-First**: No permanent identifiers or location tracking
-- **Ephemeral Connections**: Connections exist only while devices are in range
-- **Secure Authentication**: [SHA-256](https://en.wikipedia.org/wiki/SHA-2) hashed codes for profile verification
-- **Distance Estimation**: [RSSI](https://en.wikipedia.org/wiki/Received_signal_strength_indicator)-based approximate distance calculation
-
-## Data transmitted
-
-![Data transmitted](./docs/images/slide2.png)
-
-Data is being transmitted to the user in the visible area of the device.
-
-## Logo
-
-![Logos](./docs/images/logos.png)
-
-The Telescan logo represents a stylized Telegram paper plane emitting a signal, symbolizing nearby discovery and connection.
-
-- **Light Theme**: Designed for light backgrounds
-- **Dark Theme**: Designed for dark backgrounds
-
-## Architecture
-
-Telescan consists of three main components:
-
-### 1. Telegram Bot
-
-- Generates unique 8-character authentication codes
-- Links Telegram profiles to the mobile app
-
-### 2. iOS Application
-
-- **BLE Manager**: Handles Bluetooth discovery and advertising
-- **Network Service**: Communicates with backend API for profile data
-- **Interface**: Modern, intuitive user interface
-
-### 3. Backend API
-
-- RESTful API for profile management
-- Secure storage of user data
-- Image hosting via S3
-
-## Requirements
-
-- iOS 17.0+
-- Xcode 15.0+
-- Swift 5.9+
-- Telegram account
-
-## Installation
-
-### For Users
-
-1. Download Telescan from the App Store _(link will be added)_
-2. Open Telegram and find [@tgtelescan_bot](https://t.me/tgtelescan_bot)
-3. Start the bot and generate your authentication code
-4. Open Telescan app and enter the code
-5. Grant Bluetooth permissions when prompted
-
-### For Developers
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/hiTechTeam/Telescan-iOS.git
-cd Telescan-iOS
-```
-
-2. Open `TelescaniOS.xcodeproj` in Xcode
-
-3. Configure your backend API endpoints in `App/Configuration/Configs/AppConfig.swift`
-
-4. Build and run on a physical iOS device (BLE requires physical hardware)
-
-## Usage
-
-### First Time Setup
-
-1. **Telegram Integration**:
-
-   - Open Telegram
-   - Search for [@tgtelescan_bot](https://t.me/tgtelescan_bot)
-   - Send `/start` to generate your code
-
-2. **App Setup**:
-
-   - Launch Telescan
-   - Enter the 8-character code from Telegram
-   - Confirm your profile information
-
-3. **Enable Discovery**:
-   - Toggle scanning in the main interface
-   - Grant Bluetooth permissions
-
-### Discovering People
-
-1. Navigate to the "People" tab
-2. Enable scanning
-3. Nearby users with Telescan will appear automatically
-4. Tap on a profile to view details and open in Telegram
-
-### Managing Your Profile
-
-1. Go to the "Profile" tab
-2. View your current information
-3. Update your profile photo if needed
-4. Access app information and settings
-
-## Project Structure
-
-```
-TelescaniOS/
-├── App/
-│   ├── Models/          # Data models (ProfileInfo, Requests, Responses)
-│   ├── Services/        # Core services
-│   │   ├── BLE/         # Bluetooth Low Energy manager
-│   │   ├── NET/         # Network communication
-│   │   └── Storage/     # Local data storage
-│   ├── Utils/           # Utilities and extensions
-│   ├── ViewModels/      # MVVM view models
-│   └── Views/           # SwiftUI views and components
-├── Configuration/       # App configuration and plist
-├── Resources/           # Assets, colors, localization
-└── TelescaniOS.xcodeproj/
-```
-
-## Key Components
-
-### BLEManager
-
-Handles all Bluetooth operations:
-
-- Advertising device presence with Telegram ID
-- Scanning for nearby devices
-- Managing connection timeouts
-- Calculating approximate distances via [RSSI](https://en.wikipedia.org/wiki/Received_signal_strength_indicator)
-
-### FetchService
-
-Manages network communication:
-
-- [SHA-256](https://en.wikipedia.org/wiki/SHA-2) code hashing
-- API request handling
-- Profile data fetching
-- Image upload functionality
-
-### PeopleViewModel
-
-Coordinates people discovery:
-
-- BLE device management
-- Profile caching
-- Distance calculations
-- User data loading
-
-## Security
-
-- **Code Hashing**: All authentication codes are SHA256 hashed before transmission
-- **HTTPS Only**: All network communication uses TLS encryption
-- **Ephemeral Data**: No persistent storage of sensitive information
-- **Privacy by Design**: Minimal data collection and retention
-
-[SECURiTY.md](./SECURITY.md)
+Android support is planned. Platform-specific setup and development instructions live in the corresponding repository.
 
 ## Privacy
 
-Telescan is designed with privacy as a core principle:
+Telescan does not collect location, contacts, analytics, or advertising identifiers. BLE signal strength and approximate distance are processed locally on the device. The service stores the Telegram ID, display name, username, profile photo, and hashed authentication code required to provide the shared profile.
 
-- No location data is collected or stored
-- Connections are temporary and device-only
-- Profile data is fetched on-demand and cached briefly
-- Users control when their device is discoverable
-- No tracking or analytics
+Users control when they are discoverable and can permanently delete their Telescan account and associated data from the profile screen in the app. Deleting a Telescan account does not delete or modify the connected Telegram account.
 
-[PRIVACY_POLICY.md](./PRIVACY_POLICY.md)
+## Documentation
 
-## Contributing
+- [Whitepaper](./WHITEPAPER.md) — product and technical design
+- [Privacy Policy](./PRIVACY_POLICY.md) — collected data, retention, and deletion
+- [Security Policy](./SECURITY.md) — security practices and vulnerability reporting
+- [Roadmap](./ROADMAP.md) — planned development
+- [Known Issues](./KNOWN_ISSUES.md) — current limitations and troubleshooting
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+![Telescan logos](./docs/images/logos.png)
 
-## Development Setup
+## License and contact
 
-### Dependencies
-
-- [Kingfisher](https://github.com/onevcat/Kingfisher) — Image loading and caching
-- [Swift Log](https://github.com/apple/swift-log) — Structured, leveled logging
-- CoreBluetooth — BLE functionality (built-in)
-- SwiftUI — UI framework (built-in)
-
-### Testing
-
-Currently, no automated tests are implemented.
-
-In the future, you can run tests in Xcode:
-
-```bash
-xcodebuild test -project TelescaniOS.xcodeproj -scheme Telescan -destination 'platform=iOS Simulator'
-```
-
-run simulator and past command in terminal
-
-### Building for Release
-
-1. Update version in `Info.plist`
-2. Archive in Xcode
-3. Upload to App Store Connect
-
-## Troubleshooting
-
-### BLE Issues
-
-- Ensure Bluetooth is enabled in iOS Settings
-- Test on physical devices (simulator doesn't support BLE)
-
-### Network Issues
-
-- Check internet connectivity
-
-### Telegram Integration
-
-- Ensure you have a Telegram username set
-- Check that the generated code is entered correctly
-- Verify Telegram account permissions
-
-**All possible faults will be located in** [KNOWN_ISSUES.md](./KNOWN_ISSUES.md)
-
-## Roadmap
-
-Project development plans [ROADMAP.md](./ROADMAP.md)
-
-## License
-
-This project is licensed under the [MIT License](./LICENSE).
-
-## Contact
-
-- **Developer**: [r66cha](https://github.com/r66cha)
-- **Telegram**: [@ruslanrocketman1](https://t.me/ruslanrocketman1)
-- **Email**: r66cha@gmail.com
-
----
-
-_For detailed technical information, see [WHITEPAPER.md](./WHITEPAPER.md)_
+Telescan is available under the [MIT License](./LICENSE). Contact [r66cha](https://github.com/r66cha) via [Telegram](https://t.me/ruslanrocketman1) or [email](mailto:r66cha@gmail.com).
