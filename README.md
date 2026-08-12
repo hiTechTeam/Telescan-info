@@ -40,6 +40,7 @@ Users control when they are discoverable and can permanently delete their Telesc
 
 - [Whitepaper](./WHITEPAPER.md) — product and technical design
 - [Privacy Policy](./PRIVACY_POLICY.md) — collected data, retention, and deletion
+- [Terms of Service](./TERMS_OF_SERVICE.md) — rules for using Telescan
 - [Security Policy](./SECURITY.md) — security practices and vulnerability reporting
 - [Roadmap](./ROADMAP.md) — planned development
 - [Known Issues](./KNOWN_ISSUES.md) — current limitations and troubleshooting
