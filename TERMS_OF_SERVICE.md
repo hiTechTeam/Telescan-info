@@ -1,6 +1,6 @@
 # Telescan Terms of Service
 
-**Public page:** [telescan.space/terms](https://telescan.space/terms)
+**Public page:** [tgtelescan.ru/terms](https://tgtelescan.ru/terms)
 
 **Effective date:** August 12, 2026
 

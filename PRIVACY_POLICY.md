@@ -1,6 +1,6 @@
 # Privacy Policy for Telescan
 
-**Public page:** [telescan.space/privacy](https://telescan.space/privacy)
+**Public page:** [tgtelescan.ru/privacy](https://tgtelescan.ru/privacy)
 
 **Effective date:** August 12, 2026
 
