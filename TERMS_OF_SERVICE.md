@@ -44,4 +44,4 @@ To the maximum extent permitted by law, Telescan's maintainers are not liable fo
 
 We may update these Terms when the service or legal requirements change. The effective date above identifies the current version. Material changes will be presented through an appropriate service or documentation update. Continued use after updated Terms take effect means you accept them.
 
-For questions about these Terms, contact [r66cha@gmail.com](mailto:r66cha@gmail.com).
+For questions about these Terms, contact [admin@tgtelescan.ru](mailto:admin@tgtelescan.ru).

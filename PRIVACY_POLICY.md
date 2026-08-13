@@ -62,4 +62,4 @@ Telescan is not intended for children under 13. Age requirements may be higher w
 
 We may update this policy when the service or legal requirements change. The effective date above identifies the current version.
 
-For privacy questions, contact [r66cha@gmail.com](mailto:r66cha@gmail.com).
+For privacy questions, contact [admin@tgtelescan.ru](mailto:admin@tgtelescan.ru).
