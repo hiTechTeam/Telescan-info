@@ -1,135 +1,211 @@
 # Telescan Whitepaper
 
-## Purpose
+## Purpose and scope
 
-Telescan is a proximity-discovery system that connects nearby people through the public Telegram profiles they choose to share. Bluetooth Low Energy (BLE) provides local discovery, while a small backend stores account profiles and photos.
+Telescan connects nearby people through the public Telegram profiles they
+choose to share. Bluetooth Low Energy (BLE) performs local discovery, while a
+small authenticated backend manages accounts, sessions, profiles, and photos.
 
-The current implementation is intentionally narrow: register through a Telegram bot, enable discovery in the iOS app, see nearby Telescan users, and open a selected profile in Telegram. Telescan does not provide its own chat, location history, or encounter analytics.
+The current product scope is intentionally narrow: link an account through a
+Telegram bot, enable discovery in the iOS app, see nearby Telescan identities,
+load their shared profiles, and open a selected Telegram username. Telescan has
+no chat, GPS tracking, encounter history, analytics, or advertising system.
 
 ## System architecture
 
-Telescan is split across independent repositories:
+Telescan is split across independent repositories with explicit ownership
+boundaries:
 
-- **Telegram bot:** creates accounts, copies basic public Telegram profile data, generates authentication codes, and updates codes.
-- **iOS app:** handles registration, BLE scanning and advertising, approximate distance, profile display, photo management, and account deletion.
-- **API:** reads profiles, changes photos, and deletes accounts.
-- **MongoDB:** stores Telegram ID, first name, username, authentication-code hash, and photo URL.
-- **S3-compatible storage:** stores profile-photo objects.
-- **nginx:** terminates HTTPS and forwards requests to the API.
+- **iOS app:** registration, Keychain-backed device sessions, BLE scanning and
+  advertising, approximate distance, profile display, photo management, logout,
+  and account deletion.
+- **Telegram bot:** Telegram commands, profile-data forwarding, display of
+  one-time codes, and logout-all confirmation messages.
+- **API:** the only application service that reads or writes MongoDB and
+  S3-compatible photo storage.
+- **Database repository:** MongoDB 8 runtime configuration only.
+- **nginx:** TLS termination and public routing policy.
 
 ```mermaid
 flowchart LR
-    U["User"] --> B["Telegram bot"]
-    B --> DB[("MongoDB")]
-    B --> S3[("Photo storage")]
+    U["User"] --> BOT["Telegram bot"]
     U --> IOS["iOS app"]
-    IOS <-->|"BLE"| PEER["Nearby iOS app"]
-    IOS -->|"HTTPS"| API["Telescan API"]
-    PEER -->|"HTTPS"| API
-    API --> DB
-    API --> S3
+    IOS <-->|"BLE: telescan_id"| PEER["Nearby iOS app"]
+    IOS -->|"HTTPS + device session"| API["Telescan API"]
+    PEER -->|"HTTPS + device session"| API
+    BOT -->|"Internal API + service secret"| API
+    API -->|"Confirmation notification"| BOT
+    API --> DB[("MongoDB")]
+    API --> S3[("Photo storage")]
     IOS --> TG["Telegram profile"]
 ```
 
-## Registration and profiles
+The bot and iOS app never receive MongoDB or S3 credentials.
 
-The Telegram bot reads the user's Telegram ID, first name, username, and current public profile photo. It generates an eight-character code from uppercase letters and digits, stores the SHA-256 hash, and shows the original code to the user.
+## Registration, identity, and sessions
 
-The user enters that code manually in the iOS app. The app hashes it and requests the matching profile from the API. After confirmation, the app stores its own profile, Telegram ID, original code, photo URL, and discovery settings locally in `UserDefaults`; a local profile image may also be stored in the app's documents directory.
+The bot reads the user's Telegram ID, first name, username, and first available
+profile photo. It forwards those fields to the API over the authenticated
+`/internal/v1` contract. The API upserts the account and assigns a random,
+stable UUID called `telescan_id`.
 
-The bot can replace the stored hash with a newly generated code. The old code then stops matching the account. There is currently no deep-link registration flow and no expiring server session.
+The API generates an eight-character code from uppercase letters and digits.
+It stores an HMAC-SHA-256 digest, revokes any earlier unused code for that user,
+and returns the clear code to the bot. The default validity period is ten
+minutes. Code consumption is atomic, records the installation `device_id`, and
+can succeed only once.
+
+The iOS app sends the clear code and a random installation UUID directly to the
+API. On success, the API creates or replaces that device's session and returns:
+
+- an HS256 access JWT, normally valid for 15 minutes;
+- a random refresh token, normally valid for 30 days;
+- the account's public profile and `telescan_id`.
+
+Only a SHA-256 digest of the refresh token is stored. Refresh rotates the token
+atomically; reuse of a previous refresh token revokes the affected session.
+Every protected endpoint validates the JWT and confirms that its session is
+still active, making revocation immediate.
+
+The iOS Keychain stores access and refresh tokens plus the installation
+`device_id`. The clear link code is cleared after the linking attempt and is not
+persisted. Public profile metadata and discovery preferences may be stored in
+`UserDefaults`.
+
+## Logout and account deletion
+
+Current-device logout revokes one `DeviceSession` and clears local account data
+and caches. Logout-all is intentionally a two-channel flow:
+
+1. iOS creates a temporary confirmation request through the authenticated API.
+2. The API asks the bot to send Confirm and Cancel buttons to the linked
+   Telegram account.
+3. The bot records the Telegram message IDs through the internal API.
+4. A confirmed decision revokes every active session for the user; cancellation
+   or expiry leaves sessions active.
+
+Account deletion is separate from logout. The API revokes sessions first, then
+removes owned photos, link codes, confirmation requests, device sessions, and
+the user record. Local tokens, profile metadata, BLE state, stored images, and
+caches are cleared only after the server confirms deletion.
 
 ## BLE discovery protocol
 
-Each discoverable device publishes a custom primary GATT service:
+Each discoverable iPhone publishes a custom primary GATT service:
 
 | Item | Value |
 | --- | --- |
 | Service UUID | `A6B50001-8A5D-4F7A-9E4C-123456789001` |
 | Identity characteristic | `A6B50002-8A5D-4F7A-9E4C-123456789002` |
-| Identity value | Telegram ID encoded as UTF-8 |
+| Identity value | Lowercase `telescan_id` UUID encoded as UTF-8 |
 | Characteristic access | Readable |
 
-The app advertises the service UUID and, when iOS permits, places the Telegram ID in the advertisement local name. A scanning device filters for the service UUID. If the local name contains an identity, it can be used immediately; otherwise the scanner connects, discovers the service and characteristic, and reads the identity.
+The service UUID is advertised, and iOS may include the `telescan_id` in the
+advertisement local name. If the local name is unavailable, the scanner
+connects, discovers the service and characteristic, and reads the identity.
 
 ```mermaid
 sequenceDiagram
-    participant A as Discoverable device
-    participant B as Scanning device
+    participant A as Discoverable iPhone
+    participant B as Scanning iPhone
     participant API as Telescan API
 
-    A->>B: Advertise service UUID and optional Telegram ID
-    alt ID is in local name
-        B->>B: Read ID from advertisement
-    else ID is not in local name
+    A->>B: Advertise service UUID and optional telescan_id
+    alt Identity is in local name
+        B->>B: Read telescan_id
+    else Identity is omitted
         B->>A: Connect and read identity characteristic
-        A-->>B: Telegram ID
+        A-->>B: telescan_id
     end
-    B->>API: Request shared profile by Telegram ID
-    API-->>B: Name, username, and photo URL
+    B->>API: GET /api/v1/profiles/{telescan_id} with access token
+    API-->>B: Shared name, username, and photo URL
 ```
 
-The scanner accepts duplicate advertisements so signal strength can be updated. A device is removed after it has not been seen for 20 seconds. CoreBluetooth state-restoration identifiers are configured, but iOS ultimately controls background scanning and advertising; continuous background discovery is not guaranteed.
+Duplicate advertisements are accepted so RSSI can be updated. A device is
+removed after 20 seconds without a sighting. CoreBluetooth state-restoration
+identifiers are configured, but iOS controls background scheduling, so
+continuous discovery is not guaranteed.
 
-The Telegram ID is not encrypted at the BLE layer and can be observed by nearby devices. The protocol provides discovery, not proof of identity or proximity.
+The random BLE identifier reduces direct exposure of the Telegram numeric ID,
+but it is still a stable public pseudonym that nearby observers can capture,
+replay, or correlate until the Telescan account is deleted.
 
-## API surface
+## API surface and authorization
 
-The current API exposes these profile operations:
-
-| Method and path | Purpose | Credential check |
+| Area | Paths | Credential |
 | --- | --- | --- |
-| `GET /v1/code/` | Find a profile by authentication-code hash | Matching hash |
-| `GET /v1/users/` | Find a shared profile by Telegram ID | None |
-| `POST /v1/users/upload-photo` | Upload a profile photo | Telegram ID only |
-| `POST /v1/users/update-photo` | Replace or remove a profile photo | Telegram ID only |
-| `DELETE /v1/users/` | Delete account, photos, and stored profile | Telegram ID and code hash |
+| Link and refresh | `/api/v1/auth/link`, `/api/v1/auth/refresh` | One-time code or refresh token |
+| Session management | `/api/v1/auth/session`, `/api/v1/auth/logout-all/request` | Active access JWT and session |
+| Own account | `/api/v1/users/me`, `/api/v1/users/me/photo` | Active access JWT and session |
+| Nearby profiles | `/api/v1/profiles/{telescan_id}` | Active access JWT and session |
+| Bot operations | `/internal/v1/...` | Shared bot service Bearer secret |
+| Legal pages | `/privacy`, `/terms` | Public |
 
-Responses contain only the profile fields required by the app. nginx serves the API over TLS 1.2 or TLS 1.3. API-level rate limiting and token-based sessions are not currently implemented.
+Legacy `/v1` endpoints exist only behind the `ENABLE_LEGACY_API` migration
+flag and are hidden from OpenAPI. Public nginx blocks `/internal/`, `/docs`,
+`/docs/`, `/redoc`, and `/openapi.json` with `404`. Swagger remains available
+only through the API's `127.0.0.1:8000` binding and an SSH tunnel.
 
-## Data lifecycle
+## Server-side data model
 
-The server account record exists until the user deletes the account. The service keeps the current Telegram profile fields, authentication-code hash, and profile-photo URL. Profile photos are stored as S3-compatible objects.
+MongoDB currently contains:
 
-Nearby profile data is loaded only after a device is discovered and is held in the app while that device remains visible. The app does not send RSSI, estimated distance, GPS coordinates, or an encounter history to the server. Standard HTTP access metadata may be processed by the deployed web infrastructure.
+- `users`: random `telescan_id`, Telegram ID, name, username, photo URL, and
+  timestamps;
+- `link_codes`: HMAC digest, owner, status, expiry, consumption metadata, and
+  an attempt counter updated on successful atomic consumption;
+- `device_sessions`: installation ID, refresh-token digest, expiry, activity,
+  and revocation metadata;
+- `confirmation_requests`: public request ID, action, status, expiry, and
+  temporary Telegram chat/message IDs.
 
-Account deletion follows this order:
-
-1. The iOS app sends the Telegram ID and hash of the locally stored code.
-2. The API compares the hash with the account record.
-3. The API removes the legacy photo object, current photo, and all objects under the user's photo prefix.
-4. After storage cleanup succeeds, the API deletes the MongoDB record.
-5. The app stops BLE activity and clears its profile, image files, `UserDefaults`, and caches.
-
-If remote photo cleanup fails, the database record remains so deletion can be retried instead of silently leaving inaccessible account data behind.
+Link codes, sessions, and confirmations have TTL indexes. MongoDB TTL cleanup is
+asynchronous, so an expired document may remain stored briefly after it is no
+longer accepted by application logic. Profile objects use the
+`users/{telescan_id}/...` prefix in S3-compatible storage.
 
 ## Distance estimation
 
-Telescan converts RSSI into a coarse distance estimate using a log-distance path-loss model:
+RSSI is converted into a coarse distance estimate using the log-distance model:
 
 `distance = 10 ^ ((TX - RSSI) / (10 × n))`
 
-The current defaults are `TX = -59 dBm` at one metre and path-loss exponent `n = 2`. The app collects up to 30 RSSI samples per visible device, uses the median to reduce spikes, and recalculates displayed distance every three seconds. The result is rounded to a minimum of one metre.
-
-RSSI is strongly affected by device orientation, the human body, walls, interference, radio hardware, and iOS scheduling. The displayed value is a relative proximity hint, not a physical measurement or safety boundary.
+The current defaults are `TX = -59 dBm` at one metre and path-loss exponent
+`n = 2`. The app keeps up to 30 samples for each visible identity, uses the
+median, and updates displayed distance every three seconds. The result is a
+relative proximity hint, not a physical measurement or safety boundary.
 
 ## Privacy and security boundaries
 
-Telescan avoids GPS, contacts, advertising identifiers, analytics SDKs, and server-side encounter history. Users explicitly choose when their identity is advertised and can delete the account in the app.
+Implemented protections include one-time HMAC-protected link codes,
+Keychain-backed client tokens, rotating refresh tokens, per-request session
+validation, authenticated own-account mutations, a service credential for bot
+traffic, explicit production secrets, TLS, and public proxy denial of internal
+and documentation routes.
 
-The current system should still be treated as public-profile discovery:
+Current limitations remain:
 
-- BLE broadcasts a stable Telegram ID to nearby observers.
-- Profile lookup by Telegram ID is public.
-- Authentication uses a reusable eight-character code, not an expiring token.
-- Hashing does not prevent replay if the hash or original code is obtained.
-- Photo mutation endpoints do not yet have a separate authorization token.
-- BLE identities and RSSI can be captured, replayed, or manipulated.
+- any authenticated Telescan account that knows a valid `telescan_id` can query
+  that shared profile; the API does not prove physical proximity;
+- BLE identifiers and RSSI can be observed, replayed, or manipulated;
+- the rate limiter is process-local and resets on restart;
+- the bot service credential is a shared long-lived secret;
+- logout-all depends on Telegram and bot availability;
+- background BLE behavior is controlled by iOS;
+- the legacy API must remain disabled except during the controlled migration
+  window.
 
-These constraints are documented so the implementation is not presented as providing anonymity, mutual authentication, or end-to-end encryption. Security hardening priorities are tracked in the [Roadmap](./ROADMAP.md), and vulnerability reporting is described in the [Security Policy](./SECURITY.md).
+Telescan should be understood as public-profile discovery, not anonymity,
+mutual identity proof, precise ranging, or end-to-end encryption.
 
-## Conclusion
+## Verification status
 
-Telescan demonstrates a small, inspectable bridge between local BLE discovery and an existing social network. Its value comes from a simple interaction and explicit user control rather than persistent tracking. Future work should preserve that boundary while strengthening credentials, endpoint authorization, rate limiting, cross-platform interoperability, and physical-device testing.
+The current repositories include automated API authentication/deletion tests,
+bot service and confirmation tests, iOS token-refresh concurrency tests, BLE
+manager tests, Compose validation, Python linting/formatting/type checks, and
+Debug/Release iOS builds. Physical-device BLE, production MongoDB/S3 migration,
+certificate renewal, backup/restore, and full deployment verification remain
+operational checks.
 
-This document describes the implementation as of August 12, 2026. The source code is licensed under the [MIT License](./LICENSE).
+This document describes the implementation on August 14, 2026. Source code is
+licensed under the [MIT License](./LICENSE).

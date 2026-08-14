@@ -2,45 +2,85 @@
 
 ## Reporting a vulnerability
 
-Please do not disclose security vulnerabilities in a public GitHub issue or discussion. Send a private report to [r66cha@gmail.com](mailto:r66cha@gmail.com) with:
+Do not disclose a security vulnerability in a public GitHub issue or
+discussion. Send a private report to
+[r66cha@gmail.com](mailto:r66cha@gmail.com) with:
 
-- a clear description and affected component;
-- reproducible steps or proof of concept;
+- the affected component and a clear description;
+- reproducible steps or a proof of concept;
 - expected impact;
-- suggested mitigation, if available.
+- a suggested mitigation, if available.
 
-We aim to acknowledge reports within 48 hours, investigate confirmed issues, provide progress updates, and coordinate disclosure after a fix is available. Timelines depend on severity and complexity.
+We aim to acknowledge reports within 48 hours, investigate confirmed issues,
+provide progress updates, and coordinate disclosure after a fix is available.
+Timelines depend on severity and complexity.
 
-Please avoid accessing data without permission, disrupting the service, degrading availability, or violating user privacy while testing. Researchers may be credited with their permission.
+While testing, do not access data without permission, disrupt the service,
+degrade availability, or violate user privacy. Researchers may be credited with
+their permission.
 
-## Current security model
+## Implemented security model
 
-- API traffic is served over HTTPS and permits TLS 1.2 and TLS 1.3.
-- The bot stores authentication codes as SHA-256 hashes; the iOS app hashes a code before sending it to the API.
-- Account deletion verifies both the Telegram ID and authentication-code hash.
-- Profile photos and account records are removed by the in-app deletion flow.
-- BLE access requires iOS permission, and users explicitly control discoverability.
-- The app contains no advertising or third-party analytics SDKs.
+- The API is the sole owner of MongoDB and S3-compatible profile-photo access.
+- Link codes are random, short-lived, one-time values. The API stores only an
+  HMAC-SHA-256 digest and atomically records consumption.
+- iOS stores access tokens, rotating refresh tokens, and its random installation
+  ID in Keychain; it does not persist the clear link code.
+- Access JWTs are accepted only while their referenced device session is active.
+- Refresh-token reuse revokes the affected session.
+- Own-profile reads, photo mutations, logout, nearby-profile reads, and account
+  deletion require an active access token and session.
+- Logout-all requires a second-channel decision from the linked Telegram user.
+- Internal bot/API calls use a shared Bearer service secret and constant-time
+  comparisons.
+- Production API startup rejects built-in development secrets and wildcard or
+  empty CORS configuration.
+- nginx permits TLS 1.2/1.3 and returns `404` for `/internal/`, Swagger, ReDoc,
+  and OpenAPI paths on every public domain.
+- The app has no advertising or third-party analytics SDKs.
 
 ## BLE design
 
-Telescan advertises a custom 128-bit BLE service UUID. The Telegram ID may be present in the advertisement local name; if it is unavailable there, another device can connect to the service and read the identity characteristic. Devices that have not been seen for 20 seconds are removed from the nearby list.
+Telescan advertises a random public `telescan_id` UUID through a custom BLE
+service. The UUID may appear in the advertisement local name; otherwise it can
+be read from a GATT characteristic. Telegram IDs, access tokens, and refresh
+tokens are not broadcast.
 
-BLE advertisements are public to devices in radio range. A nearby observer can capture, replay, or manipulate identifiers and signal strength. RSSI is only an approximate distance signal and is not proof of physical proximity or identity.
+BLE traffic remains public to devices in radio range. A nearby observer can
+capture, correlate, replay, or replace the advertised UUID and manipulate RSSI.
+The protocol discovers a claimed Telescan identity; it does not prove physical
+proximity, ownership, or authenticity.
 
-## Known limitations
+## Current limitations
 
-Telescan currently uses an eight-character code rather than an expiring session or access token. The original code is stored locally in iOS `UserDefaults`, and possession of it may allow account access until the code is updated.
+- A valid authenticated account can request any shared profile when it knows
+  that profile's `telescan_id`; proximity is not verified server-side.
+- API rate limiting is held in one process, is not shared between replicas, and
+  resets on restart.
+- `BOT_SERVICE_SECRET` is a long-lived shared credential and requires external
+  rotation and secret-management procedures.
+- Logout-all depends on Telegram and bot availability. Current-device logout
+  and account deletion remain separate API operations.
+- CoreBluetooth background scanning and advertising are scheduled by iOS and
+  cannot be guaranteed continuously.
+- A feature-flagged legacy API exists for a short migration window. Enabling it
+  restores weaker compatibility behavior and must be treated as temporary.
+- The repository tests do not replace physical-device BLE testing, production
+  backup/restore drills, storage permission review, or deployment monitoring.
 
-Hashing protects the original code in server storage but does not by itself prevent replay. Public profile lookup uses a Telegram ID and does not require authentication. Some profile-photo operations also rely on Telegram ID without a separate authorization token. API-level rate limiting is not currently implemented.
-
-These limitations mean Telescan should not be used to share sensitive or private information. Planned authentication hardening belongs in the [Roadmap](./ROADMAP.md).
+Telescan is intended for public-profile discovery and must not be used to share
+sensitive information or as a safety, ranging, access-control, or identity
+verification system.
 
 ## User guidance
 
-- Enable discoverability only when you want to be visible nearby.
-- Keep your authentication code private and update it through [@tgtelescan_bot](https://t.me/tgtelescan_bot) if it may be compromised.
+- Enable discoverability only when you want the random Telescan identity to be
+  visible nearby.
+- Keep one-time codes private and enter them only in the official iOS app.
+- If a device or token may be compromised, sign out that device or request
+  logout-all and confirm it in the bot.
 - Keep iOS, Telescan, and Telegram updated.
 - Avoid using the app on a jailbroken device.
 
-Supported releases and fixes are tracked in the relevant component repositories. General security questions can be sent to [r66cha@gmail.com](mailto:r66cha@gmail.com).
+Security work is tracked in the [Roadmap](./ROADMAP.md). General questions can
+be sent to [r66cha@gmail.com](mailto:r66cha@gmail.com).

@@ -6,48 +6,74 @@
 
 ![About Telescan](./docs/images/slide1.png)
 
-Telescan is a social radar for discovering people nearby. It uses Bluetooth Low Energy (BLE) to detect other Telescan users without collecting GPS coordinates or sending proximity measurements to the server.
+Telescan is a social radar for discovering people nearby. Bluetooth Low Energy
+(BLE) performs discovery directly between devices without collecting GPS
+coordinates or sending proximity measurements to the server.
 
-Telescan works as an extension of Telegram. A user links a Telegram profile through the Telescan bot, chooses when to become discoverable, and can open a nearby person's public profile directly in Telegram. BLE discovery works locally; profile loading, photo management, and account deletion require an internet connection.
+Telescan extends Telegram rather than replacing it. A user links a Telegram
+profile through the Telescan bot, chooses when to become discoverable, and can
+open a nearby person's public profile in Telegram. Registration, authenticated
+profile loading, photo management, session management, and account deletion
+require internet access.
 
 ## How it works
 
-1. Get an authentication code from [@tgtelescan_bot](https://t.me/tgtelescan_bot) and enter it in the iOS app.
-2. Enable discovery to advertise your Telegram ID and detect nearby Telescan users over BLE.
-3. Select a person to view their shared profile and open it in Telegram.
+1. Request a short-lived, one-time code from
+   [@tgtelescan_bot](https://t.me/tgtelescan_bot).
+2. Enter the code in the iOS app. The app creates a per-device session and
+   stores its access and rotating refresh tokens in Keychain.
+3. Enable discovery. The app advertises a random public `telescan_id`, not a
+   Telegram ID or authentication token.
+4. Select a nearby device. The app uses its authenticated API session to load
+   the shared profile and can open its Telegram username.
 
 ![Data transmitted between nearby devices](./docs/images/slide2.png)
 
-## Ecosystem
+## Current architecture
 
-| Project                                                            | Purpose                           |
-| ------------------------------------------------------------------ | --------------------------------- |
-| [Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS)         | iOS application and BLE discovery |
-| [Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app) | Telegram registration bot         |
-| [Telescan-api](https://github.com/hiTechTeam/Telescan-api)         | Profile and account API           |
-| [Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx)     | Reverse proxy                     |
-| [Telescan-db](https://github.com/hiTechTeam/Telescan-db)           | Database configuration            |
+| Project | Responsibility |
+| --- | --- |
+| [Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS) | SwiftUI client, Keychain sessions, BLE scanning and advertising |
+| [Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app) | Telegram commands and logout-all confirmation UI |
+| [Telescan-api](https://github.com/hiTechTeam/Telescan-api) | Authentication, authorization, profiles, photos, and all application data access |
+| [Telescan-db](https://github.com/hiTechTeam/Telescan-db) | MongoDB 8 runtime infrastructure only |
+| [Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx) | TLS termination and public routing policy |
 
-Android support is planned. Platform-specific setup and development instructions live in the corresponding repository.
+The API is the sole owner of MongoDB collections and S3-compatible photo
+storage. The bot uses a service-authenticated internal API; iOS uses short-lived
+JWT access tokens backed by active per-device sessions. Android support is not
+implemented.
 
-## Privacy
+## Privacy summary
 
-Telescan does not collect location, contacts, analytics, or advertising identifiers. BLE signal strength and approximate distance are processed locally on the device. The service stores the Telegram ID, display name, username, profile photo, and hashed authentication code required to provide the shared profile.
+Telescan does not collect GPS location, contacts, Telegram messages,
+advertising identifiers, analytics events, or encounter history. RSSI and
+approximate distance stay on the iPhone.
 
-Users control when they are discoverable and can permanently delete their Telescan account and associated data from the profile screen in the app. Deleting a Telescan account does not delete or modify the connected Telegram account.
+The service stores the Telegram account fields needed for the shared profile, a
+random `telescan_id`, profile photos, one-time link-code digests, device-session
+metadata, and temporary logout-all confirmations. Users control discoverability
+and can permanently delete the Telescan account and owned data from the app.
+Deleting Telescan does not delete or modify the connected Telegram account.
 
 ## Documentation
 
-- [Whitepaper](./WHITEPAPER.md) — product and technical design
-- [Privacy Policy](https://tgtelescan.ru/privacy) — collected data, retention, and deletion
-- [Terms of Service](https://tgtelescan.ru/terms) — rules for using Telescan
-- [Security Policy](./SECURITY.md) — security practices and vulnerability reporting
-- [Roadmap](./ROADMAP.md) — planned development
+- [Whitepaper](./WHITEPAPER.md) — implemented product and technical design
+- [Privacy Policy](./PRIVACY_POLICY.md) — processed data, retention, and deletion
+- [Terms of Service](./TERMS_OF_SERVICE.md) — service rules and limitations
+- [Security Policy](./SECURITY.md) — security model and vulnerability reporting
+- [Roadmap](./ROADMAP.md) — completed foundations and planned work
 - [Known Issues](./KNOWN_ISSUES.md) — current limitations and troubleshooting
+
+Public legal pages are served at
+[tgtelescan.ru/privacy](https://tgtelescan.ru/privacy) and
+[tgtelescan.ru/terms](https://tgtelescan.ru/terms).
 
 ![Telescan logos](./docs/images/logos.png)
 
 ## License and contact
 
-Telescan is available under the [MIT License](./LICENSE).
-Contact [r66cha](https://github.com/r66cha) via [Telegram](https://t.me/ruslanrocketman1) or [email](mailto:r66cha@gmail.com).
+Telescan source code is available under the [MIT License](./LICENSE).
+Contact [r66cha](https://github.com/r66cha) via
+[Telegram](https://t.me/ruslanrocketman1) or
+[email](mailto:r66cha@gmail.com).
