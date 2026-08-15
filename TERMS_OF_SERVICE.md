@@ -2,7 +2,7 @@
 
 **Public page:** [tgtelescan.ru/terms](https://tgtelescan.ru/terms)
 
-**Effective date:** August 14, 2026
+**Effective date:** August 15, 2026
 
 These Terms govern use of the Telescan iOS app, Telegram bot, API, and related
 services. By continuing in the app or using the service, you agree to these
@@ -30,8 +30,8 @@ information, and uploaded photos. Share only content that you have the right to
 use.
 
 Keep link codes and device access private. If a device may be compromised, sign
-out that session or request logout-all and confirm it through the Telegram bot.
-Telescan may invalidate codes or sessions to protect the service.
+out that session. Deleting the Telescan account revokes all of its device
+sessions. Telescan may invalidate codes or sessions to protect the service.
 
 Enabling discoverability broadcasts a stable random `telescan_id` to nearby
 devices. Disabling discovery stops intentional advertising, but a previously

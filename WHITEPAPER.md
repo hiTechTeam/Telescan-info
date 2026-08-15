@@ -19,8 +19,8 @@ boundaries:
 - **iOS app:** registration, Keychain-backed device sessions, BLE scanning and
   advertising, approximate distance, profile display, photo management, logout,
   and account deletion.
-- **Telegram bot:** Telegram commands, profile-data forwarding, display of
-  one-time codes, and logout-all confirmation messages.
+- **Telegram bot:** Telegram commands, current profile-data forwarding, display
+  of one-time codes, and server-side confirmation messages.
 - **API:** the only application service that reads or writes MongoDB and
   S3-compatible photo storage.
 - **Database repository:** MongoDB 8 runtime configuration only.
@@ -44,10 +44,12 @@ The bot and iOS app never receive MongoDB or S3 credentials.
 
 ## Registration, identity, and sessions
 
-The bot reads the user's Telegram ID, first name, username, and first available
-profile photo. It forwards those fields to the API over the authenticated
-`/internal/v1` contract. The API upserts the account and assigns a random,
-stable UUID called `telescan_id`.
+The bot reads the user's current Telegram ID, first name, username, and first
+available profile photo for every new code. It forwards those fields and an
+explicit photo state to the authenticated `/internal/v1` contract. The API
+upserts the account, removes an obsolete photo when Telegram reports none, and
+assigns a random, stable UUID called `telescan_id`. Failed photo downloads
+preserve the existing photo; successful replacements use unique object URLs.
 
 The API generates an eight-character code from uppercase letters and digits.
 It stores an HMAC-SHA-256 digest, revokes any earlier unused code for that user,
@@ -72,17 +74,22 @@ The iOS Keychain stores access and refresh tokens plus the installation
 persisted. Public profile metadata and discovery preferences may be stored in
 `UserDefaults`.
 
-## Logout and account deletion
+## Session validation, logout, and account deletion
 
-Current-device logout revokes one `DeviceSession` and clears local account data
-and caches. Logout-all is intentionally a two-channel flow:
+The current iOS MVP presents one account-actions alert with current-device
+logout, account deletion, and cancellation. Each destructive choice opens its
+own system confirmation. Current-device logout revokes one `DeviceSession` and
+clears local account data and caches.
 
-1. iOS creates a temporary confirmation request through the authenticated API.
-2. The API asks the bot to send Confirm and Cancel buttons to the linked
-   Telegram account.
-3. The bot records the Telegram message IDs through the internal API.
-4. A confirmed decision revokes every active session for the user; cancellation
-   or expiry leaves sessions active.
+At launch and foreground activation, iOS requests `/api/v1/users/me`. A valid
+response refreshes cached Telegram profile fields; `401` or `404` clears the
+local session, while a temporary network failure preserves it. A newly linked
+session clears local photo and HTTP caches before storing the fresh profile.
+
+The API and bot retain the two-channel logout-all confirmation contract for
+compatibility, but the current iOS app does not expose or poll that flow. A
+future multi-device logout UI should use reliable push delivery rather than
+continuous client polling.
 
 Account deletion is separate from logout. The API revokes sessions first, then
 removes owned photos, link codes, confirmation requests, device sessions, and
@@ -135,7 +142,7 @@ replay, or correlate until the Telescan account is deleted.
 | Area | Paths | Credential |
 | --- | --- | --- |
 | Link and refresh | `/api/v1/auth/link`, `/api/v1/auth/refresh` | One-time code or refresh token |
-| Session management | `/api/v1/auth/session`, `/api/v1/auth/logout-all/request` | Active access JWT and session |
+| Session management | `/api/v1/auth/session`; retained `/api/v1/auth/logout-all/request` compatibility flow | Active access JWT and session |
 | Own account | `/api/v1/users/me`, `/api/v1/users/me/photo` | Active access JWT and session |
 | Nearby profiles | `/api/v1/profiles/{telescan_id}` | Active access JWT and session |
 | Bot operations | `/internal/v1/...` | Shared bot service Bearer secret |
@@ -190,7 +197,7 @@ Current limitations remain:
 - BLE identifiers and RSSI can be observed, replayed, or manipulated;
 - the rate limiter is process-local and resets on restart;
 - the bot service credential is a shared long-lived secret;
-- logout-all depends on Telegram and bot availability;
+- remote multi-device logout is not exposed by the current iOS MVP;
 - background BLE behavior is controlled by iOS;
 - the legacy API must remain disabled except during the controlled migration
   window.
@@ -207,5 +214,5 @@ Debug/Release iOS builds. Physical-device BLE, production MongoDB/S3 migration,
 certificate renewal, backup/restore, and full deployment verification remain
 operational checks.
 
-This document describes the implementation on August 14, 2026. Source code is
+This document describes the implementation on August 15, 2026. Source code is
 licensed under the [MIT License](./LICENSE).

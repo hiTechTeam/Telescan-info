@@ -30,7 +30,8 @@ their permission.
 - Refresh-token reuse revokes the affected session.
 - Own-profile reads, photo mutations, logout, nearby-profile reads, and account
   deletion require an active access token and session.
-- Logout-all requires a second-channel decision from the linked Telegram user.
+- The retained server-side logout-all flow requires a second-channel decision
+  from the linked Telegram user; the current iOS MVP does not expose it.
 - Internal bot/API calls use a shared Bearer service secret and constant-time
   comparisons.
 - Production API startup rejects built-in development secrets and wildcard or
@@ -59,8 +60,10 @@ proximity, ownership, or authenticity.
   resets on restart.
 - `BOT_SERVICE_SECRET` is a long-lived shared credential and requires external
   rotation and secret-management procedures.
-- Logout-all depends on Telegram and bot availability. Current-device logout
-  and account deletion remain separate API operations.
+- The current iOS MVP cannot remotely revoke only the sessions on other
+  devices. Current-device logout and account deletion remain available; the
+  retained logout-all backend is not exposed until a reliable client delivery
+  design is implemented.
 - CoreBluetooth background scanning and advertising are scheduled by iOS and
   cannot be guaranteed continuously.
 - A feature-flagged legacy API exists for a short migration window. Enabling it
@@ -77,8 +80,9 @@ verification system.
 - Enable discoverability only when you want the random Telescan identity to be
   visible nearby.
 - Keep one-time codes private and enter them only in the official iOS app.
-- If a device or token may be compromised, sign out that device or request
-  logout-all and confirm it in the bot.
+- If a device or token may be compromised, sign out on that device. If every
+  session must be revoked, delete the Telescan account from an authenticated
+  device; this does not delete the Telegram account.
 - Keep iOS, Telescan, and Telegram updated.
 - Avoid using the app on a jailbroken device.
 

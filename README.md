@@ -34,7 +34,7 @@ require internet access.
 | Project | Responsibility |
 | --- | --- |
 | [Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS) | SwiftUI client, Keychain sessions, BLE scanning and advertising |
-| [Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app) | Telegram commands and logout-all confirmation UI |
+| [Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app) | Telegram commands, current profile synchronization, and server-side confirmation UI |
 | [Telescan-api](https://github.com/hiTechTeam/Telescan-api) | Authentication, authorization, profiles, photos, and all application data access |
 | [Telescan-db](https://github.com/hiTechTeam/Telescan-db) | MongoDB 8 runtime infrastructure only |
 | [Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx) | TLS termination and public routing policy |
@@ -52,8 +52,9 @@ approximate distance stay on the iPhone.
 
 The service stores the Telegram account fields needed for the shared profile, a
 random `telescan_id`, profile photos, one-time link-code digests, device-session
-metadata, and temporary logout-all confirmations. Users control discoverability
-and can permanently delete the Telescan account and owned data from the app.
+metadata, and temporary server-side confirmation records. Users control
+discoverability, can sign out the current device, and can permanently delete
+the Telescan account and owned data from the app.
 Deleting Telescan does not delete or modify the connected Telegram account.
 
 ## Documentation

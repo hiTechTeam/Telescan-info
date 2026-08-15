@@ -1,6 +1,6 @@
 # Known Issues
 
-**Last reviewed:** August 14, 2026
+**Last reviewed:** August 15, 2026
 
 ## BLE discovery is not continuous in the background
 
@@ -39,12 +39,13 @@ Current API throttling is stored in memory. It resets on restart and is not
 shared between multiple API replicas. Do not horizontally scale the API without
 a shared rate-limit adapter and an updated abuse model.
 
-## Logout-all depends on Telegram
+## Remote multi-device logout is not exposed in the iOS MVP
 
-Signing out every device requires the API, bot, and Telegram delivery to be
-available before the confirmation expires. If that path is unavailable, sign
-out the current device separately and retry logout-all later. Account deletion
-is a distinct authenticated API operation.
+The current app can sign out its own device or delete the Telescan account.
+Deleting the account revokes every session and removes owned server data without
+changing the Telegram account. The API and bot retain the confirmed logout-all
+contract, but iOS no longer polls it; a future UI depends on a reliable push
+delivery design.
 
 ## A fresh iOS checkout needs local build settings
 

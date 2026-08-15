@@ -2,7 +2,7 @@
 
 **Public page:** [tgtelescan.ru/privacy](https://tgtelescan.ru/privacy)
 
-**Effective date:** August 14, 2026
+**Effective date:** August 15, 2026
 
 Telescan is an iOS app for discovering nearby users and opening the public
 Telegram profiles they choose to share. This policy describes data processed by
@@ -26,9 +26,9 @@ The active server account contains:
 - a profile-photo URL and timestamps;
 - an internal database identifier.
 
-The Telegram ID is used for account linking and Telegram confirmation messages.
-It is not broadcast over BLE and is not returned by the current public profile
-API.
+The Telegram ID is used for account linking and retained server-side Telegram
+confirmation support. It is not broadcast over BLE and is not returned by the
+current public profile API.
 
 ### Authentication and session data
 
@@ -44,9 +44,10 @@ expiry, and optional revocation time. Access JWTs are validated against these
 active sessions. The clear access token, refresh token, and installation UUID
 are stored locally in the iOS Keychain.
 
-Logout-all requests temporarily store a random confirmation ID, action, status,
-expiry, and the Telegram chat/message IDs required to remove inline buttons and
-process the decision.
+If the retained server-side logout-all contract is invoked, it temporarily
+stores a random confirmation ID, action, status, expiry, and the Telegram
+chat/message IDs required to remove inline buttons and process the decision.
+The current iOS MVP does not expose this request flow.
 
 ### Profile photos
 
@@ -96,9 +97,9 @@ does not include advertising or third-party analytics SDKs.
 ## How data is used and shared
 
 Data is used to link accounts, maintain authenticated device sessions, display
-shared profiles, manage photos, operate nearby discovery, confirm sensitive
-session actions, prevent abuse, and maintain the service. Telescan does not sell
-personal data.
+shared profiles, manage photos, operate nearby discovery, support retained
+server-side confirmation actions, prevent abuse, and maintain the service.
+Telescan does not sell personal data.
 
 Data may be disclosed:
 
@@ -148,9 +149,9 @@ required period.
 ## Your choices
 
 You can disable discoverability, replace or remove your profile photo, sign out
-one device, request confirmed logout on all devices, or permanently delete the
-account. Depending on applicable law, you may also have rights to access,
-correct, restrict, delete, or object to processing of personal data.
+the current device, or permanently delete the account and all its sessions.
+Depending on applicable law, you may also have rights to access, correct,
+restrict, delete, or object to processing of personal data.
 
 Telescan is not intended for children under 13. A higher minimum age may apply
 under local law or Telegram and Apple platform rules.
