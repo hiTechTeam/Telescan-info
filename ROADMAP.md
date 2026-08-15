@@ -14,6 +14,9 @@ and in-app account deletion. The current iOS MVP does not expose logout-all.
 - Short-lived access JWTs backed by active `DeviceSession` records.
 - Atomic refresh-token rotation and reuse-triggered session revocation.
 - Random `telescan_id` BLE identity instead of Telegram ID.
+- Size-safe 16-byte BLE identity characteristic with staged text compatibility.
+- Resolved-only nearby profile UI with presence expiry and retry cancellation.
+- Offline-safe iOS profile cache and transient refresh-error handling.
 - Authenticated own-profile, nearby-profile, photo, logout, and deletion routes.
 - Service-authenticated bot/API integration and restart-safe confirmations.
 - Retained server-side Telegram-confirmed logout-all contract for future clients.

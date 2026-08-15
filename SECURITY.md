@@ -43,9 +43,10 @@ their permission.
 ## BLE design
 
 Telescan advertises a random public `telescan_id` UUID through a custom BLE
-service. The UUID may appear in the advertisement local name; otherwise it can
-be read from a GATT characteristic. Telegram IDs, access tokens, and refresh
-tokens are not broadcast.
+service. The advertisement contains only a fixed service UUID; the full
+`telescan_id` is read losslessly from a 16-byte GATT characteristic. A legacy
+text characteristic remains temporarily available for staged iOS upgrades.
+Telegram IDs, access tokens, and refresh tokens are not broadcast.
 
 BLE traffic remains public to devices in radio range. A nearby observer can
 capture, correlate, replay, or replace the advertised UUID and manipulate RSSI.

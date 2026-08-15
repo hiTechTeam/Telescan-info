@@ -82,9 +82,12 @@ own system confirmation. Current-device logout revokes one `DeviceSession` and
 clears local account data and caches.
 
 At launch and foreground activation, iOS requests `/api/v1/users/me`. A valid
-response refreshes cached Telegram profile fields; `401` or `404` clears the
-local session, while a temporary network failure preserves it. A newly linked
-session clears local photo and HTTP caches before storing the fresh profile.
+response refreshes cached Telegram profile fields. A definitively invalid
+session or missing current account clears local data; transport failures, rate
+limits, malformed gateway responses, and `5xx` errors during validation or
+token refresh preserve tokens, cached profile fields, and the cached photo. A
+newly linked session clears local photo and HTTP caches before storing the fresh
+profile.
 
 The API and bot retain the two-channel logout-all confirmation contract for
 compatibility, but the current iOS app does not expose or poll that flow. A
@@ -103,13 +106,18 @@ Each discoverable iPhone publishes a custom primary GATT service:
 | Item | Value |
 | --- | --- |
 | Service UUID | `A6B50001-8A5D-4F7A-9E4C-123456789001` |
-| Identity characteristic | `A6B50002-8A5D-4F7A-9E4C-123456789002` |
-| Identity value | Lowercase `telescan_id` UUID encoded as UTF-8 |
+| Compact identity characteristic | `A6B50003-8A5D-4F7A-9E4C-123456789003` |
+| Compact identity value | Full `telescan_id` UUID encoded as 16 lossless bytes |
+| Compatibility characteristic | `A6B50002-8A5D-4F7A-9E4C-123456789002` |
+| Compatibility value | Lowercase `telescan_id` UUID encoded as UTF-8 |
 | Characteristic access | Readable |
 
-The service UUID is advertised, and iOS may include the `telescan_id` in the
-advertisement local name. If the local name is unavailable, the scanner
-connects, discovers the service and characteristic, and reads the identity.
+Only the fixed service UUID is advertised. The `telescan_id` is never placed in
+the size-constrained advertisement local name. A scanner connects, reads the
+compact characteristic, and caches the peripheral-to-identity mapping. The
+text characteristic allows staged interoperability with the preceding iOS
+release. Cached mappings are periodically revalidated and discarded after
+repeated GATT failures.
 
 ```mermaid
 sequenceDiagram
@@ -117,20 +125,22 @@ sequenceDiagram
     participant B as Scanning iPhone
     participant API as Telescan API
 
-    A->>B: Advertise service UUID and optional telescan_id
-    alt Identity is in local name
-        B->>B: Read telescan_id
-    else Identity is omitted
-        B->>A: Connect and read identity characteristic
-        A-->>B: telescan_id
-    end
+    A->>B: Advertise fixed service UUID
+    B->>A: Connect and read compact identity characteristic
+    A-->>B: Full 16-byte telescan_id
     B->>API: GET /api/v1/profiles/{telescan_id} with access token
     API-->>B: Shared name, username, and photo URL
+    B->>B: Validate matching ID and required username
+    B->>B: Publish complete profile in nearby UI
 ```
 
-Duplicate advertisements are accepted so RSSI can be updated. A device is
-removed after 20 seconds without a sighting. CoreBluetooth state-restoration
-identifiers are configured, but iOS controls background scheduling, so
+Duplicate advertisements update RSSI and presence without reconnecting on each
+packet. A device expires after 10 seconds without a foreground sighting, with a
+45-second background grace period for iOS scheduling. A raw BLE candidate is
+never rendered: the app first obtains a matching API profile with a non-empty
+Telegram username, retries transient failures with bounded exponential backoff,
+and cancels resolution when presence is lost. CoreBluetooth state-restoration
+identifiers are configured, but iOS still controls background scheduling, so
 continuous discovery is not guaranteed.
 
 The random BLE identifier reduces direct exposure of the Telegram numeric ID,

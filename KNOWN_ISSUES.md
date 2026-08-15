@@ -6,7 +6,9 @@
 
 iOS controls background scanning, advertising, restoration, and radio
 scheduling. A nearby user may appear late, disappear, or require the app to be
-foregrounded even when Telescan has configured CoreBluetooth restoration.
+foregrounded even when Telescan has configured CoreBluetooth restoration. The
+client uses a longer background presence grace period, but this cannot override
+system suspension or guarantee continuous discovery.
 
 Test BLE only on physical devices. Confirm Bluetooth permission, keep both
 devices close for the first discovery, and record device model, iOS version,
@@ -22,9 +24,10 @@ identity, or access-control decisions.
 ## BLE identity can be observed or replayed
 
 The app broadcasts a random `telescan_id` instead of a Telegram ID, but that
-UUID is stable for the lifetime of the Telescan account. Nearby hardware can
-capture, correlate, or replay it. The current BLE protocol does not provide
-cryptographic proof of identity or proximity.
+UUID is stable for the lifetime of the Telescan account. It is read through a
+GATT characteristic rather than an advertisement local name, but nearby
+hardware can still connect, capture, correlate, or replay it. The current BLE
+protocol does not provide cryptographic proof of identity or proximity.
 
 ## Profile lookup does not prove proximity
 
