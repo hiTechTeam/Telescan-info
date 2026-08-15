@@ -217,12 +217,14 @@ mutual identity proof, precise ranging, or end-to-end encryption.
 
 ## Verification status
 
-The current repositories include automated API authentication/deletion tests,
-bot service and confirmation tests, iOS token-refresh concurrency tests, BLE
-manager tests, Compose validation, Python linting/formatting/type checks, and
-Debug/Release iOS builds. Physical-device BLE, production MongoDB/S3 migration,
-certificate renewal, backup/restore, and full deployment verification remain
-operational checks.
+The current repositories include automated API authentication/deletion and
+readiness tests, bot service/confirmation/liveness tests, iOS token-refresh
+concurrency tests, BLE manager tests, Compose validation, Python
+linting/formatting/type checks, Debug/Release iOS builds, secret-safe Docker build
+contexts, health-gated API/bot deployment, restart policies, and an app-owned iOS
+privacy manifest. Physical-device BLE, production MongoDB/S3 migration,
+certificate renewal, backup/restore, monitoring, and full deployment verification
+remain operational checks.
 
 This document describes the implementation on August 15, 2026. Source code is
 licensed under the [MIT License](./LICENSE).

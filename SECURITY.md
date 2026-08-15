@@ -38,6 +38,13 @@ their permission.
   empty CORS configuration.
 - nginx permits TLS 1.2/1.3 and returns `404` for `/internal/`, Swagger, ReDoc,
   and OpenAPI paths on every public domain.
+- API and bot image contexts exclude host `.env` files, Git metadata, local
+  virtual environments, tests, and tool caches. Runtime secrets are injected by
+  Compose rather than copied into image layers.
+- API and bot containers use restart policies and health endpoints; deployment
+  waits for the resulting Docker health state.
+- The iOS target declares its app-only `UserDefaults` access in its privacy
+  manifest using Apple's required `CA92.1` reason.
 - The app has no advertising or third-party analytics SDKs.
 
 ## BLE design

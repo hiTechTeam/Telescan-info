@@ -21,6 +21,8 @@ and in-app account deletion. The current iOS MVP does not expose logout-all.
 - Service-authenticated bot/API integration and restart-safe confirmations.
 - Retained server-side Telegram-confirmed logout-all contract for future clients.
 - Public nginx denial of `/internal/`, Swagger, ReDoc, and OpenAPI routes.
+- Secret-safe API and bot Docker build contexts plus restart and health policies.
+- App-owned iOS privacy manifest for the required `UserDefaults` API reason.
 - API, bot, and iOS automated tests plus Python lint, format, and type checks.
 
 ## Current priorities
@@ -29,7 +31,7 @@ and in-app account deletion. The current iOS MVP does not expose logout-all.
 | --- | --- | --- |
 | Migration | Disable the legacy API after supported iOS adoption, then remove legacy code hashes with the guarded migration command | Rollout required |
 | Rate limiting | Replace the process-local limiter with a shared Redis-compatible implementation before horizontal scaling | Planned |
-| Operations | Add deployment health checks, monitoring, log-retention rules, backup/restore drills, and documented secret rotation | Planned |
+| Operations | API/bot health-gated deployment and restart policies are implemented; monitoring, log retention, backup/restore drills, certificate renewal, and documented secret rotation remain | In progress |
 | Security | Review service-secret rotation, storage permissions, token incident response, and authenticated-profile enumeration risk | In progress |
 | BLE | Test background behavior, restoration, power use, and identity replay on multiple physical iPhone models | In progress |
 | Quality | Expand real MongoDB/S3 integration, API contract, bot failure, iOS UI, accessibility, and physical BLE tests | In progress |
