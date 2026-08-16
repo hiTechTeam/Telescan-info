@@ -28,7 +28,16 @@ and in-app unblock management are implemented.
 - API, bot, and iOS automated tests plus Python lint, format, and type checks.
 - Idempotent profile reports with target snapshots and moderation state.
 - Two-way server-enforced blocking, offline-safe iOS suppression, and unblock UI.
-- Service-authenticated internal moderation endpoints for a future admin client.
+- Service-authenticated internal moderation endpoints and a deployed,
+  allow-listed Telegram admin bot with moderator audit fields.
+- Unprivileged, read-only API, user-bot, and admin-bot containers with dropped
+  capabilities.
+- Automated TLS renewal with post-renewal nginx reload.
+- Daily encrypted MongoDB backups with restore-to-volume validation and
+  7-daily, 5-weekly, and 12-monthly retention.
+- Protected `main` branches, secret scanning with push protection, vulnerability
+  alerts, and Dependabot security updates across all repositories.
+- Pull-request iOS CI on Xcode 26.3 with tests, Release build, and bundle checks.
 
 ## Current priorities
 
@@ -36,7 +45,7 @@ and in-app unblock management are implemented.
 | --- | --- | --- |
 | Migration | Disable the legacy API after supported iOS adoption, then remove legacy code hashes with the guarded migration command | Rollout required |
 | Rate limiting | Replace the process-local limiter with a shared Redis-compatible implementation before horizontal scaling | Planned |
-| Operations | API/bot health-gated deployment and restart policies are implemented; monitoring, log retention, backup/restore drills, certificate renewal, and documented secret rotation remain | In progress |
+| Operations | Health-gated deployment, restart policies, certificate renewal, and encrypted backup/restore validation are implemented; centralized monitoring, alerting, log retention, recurring recovery drills, and documented secret rotation remain | In progress |
 | Security | Review service-secret rotation, storage permissions, token incident response, and authenticated-profile enumeration risk | In progress |
 | BLE | Test background behavior, restoration, power use, and identity replay on multiple physical iPhone models | In progress |
 | Quality | Expand real MongoDB/S3 integration, API contract, bot failure, iOS UI, accessibility, and physical BLE tests | In progress |
@@ -44,7 +53,7 @@ and in-app unblock management are implemented.
 | Android | Build an interoperable Android client after the BLE protocol is versioned | Planned |
 | Product | Publish focused onboarding, support, and operational status documentation | Planned |
 | Sessions | Revisit multi-device logout after APNs and an Apple Developer account are available; avoid foreground polling as the final design | Deferred for MVP |
-| Moderation | Build the separate allow-listed `telescan_admin` bot on the existing internal moderation API and define the moderator response SLA | Next |
+| Moderation | Operate the allow-listed admin bot, define the moderator response SLA, document escalation, and add a richer admin console only when volume requires it | In progress |
 
 ## Design constraints
 

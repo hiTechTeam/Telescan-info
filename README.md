@@ -36,9 +36,10 @@ require internet access.
 | --- | --- |
 | [Telescan-iOS](https://github.com/hiTechTeam/Telescan-iOS) | SwiftUI client, Keychain sessions, BLE scanning and advertising |
 | [Telescan-bot-app](https://github.com/hiTechTeam/Telescan-bot-app) | Telegram commands, current profile synchronization, and server-side confirmation UI |
+| [Telescan-admin-bot](https://github.com/hiTechTeam/Telescan-admin-bot) | Allow-listed Telegram moderation interface for reports |
 | [Telescan-api](https://github.com/hiTechTeam/Telescan-api) | Authentication, authorization, profiles, photos, and all application data access |
-| [Telescan-db](https://github.com/hiTechTeam/Telescan-db) | MongoDB 8 runtime infrastructure only |
-| [Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx) | TLS termination and public routing policy |
+| [Telescan-db](https://github.com/hiTechTeam/Telescan-db) | MongoDB 8 runtime and encrypted off-host backup automation |
+| [Telescan-nginx](https://github.com/hiTechTeam/Telescan-nginx) | TLS termination, renewal automation, and public routing policy |
 
 The API is the sole owner of MongoDB collections and S3-compatible photo
 storage. The bot uses a service-authenticated internal API; iOS uses short-lived
@@ -60,6 +61,20 @@ context. Users control discoverability, can manage blocked profiles, sign out
 the current device, and permanently delete the Telescan account from the app.
 Deleting Telescan does not delete or modify the connected Telegram account.
 
+Production MongoDB is backed up daily to a client-side encrypted off-host
+Restic repository. Backups are not part of normal product access and expire
+under the documented daily, weekly, and monthly retention policy.
+
+## Production controls
+
+The API, user bot, and admin bot run as unprivileged users in read-only
+containers with Linux capabilities dropped. Public nginx exposes only the
+supported API and legal routes, keeps Swagger behind an SSH tunnel, and renews
+certificates automatically. The seven repositories protect `main` with pull
+requests and enable secret scanning with push protection, vulnerability alerts,
+and Dependabot security updates. iOS additionally requires its `Build and test`
+GitHub Actions check before merge.
+
 ## Documentation
 
 - [Whitepaper](./WHITEPAPER.md) — implemented product and technical design
@@ -79,5 +94,5 @@ Public legal pages are served at
 
 Telescan source code is available under the [MIT License](./LICENSE).
 Contact [r66cha](https://github.com/r66cha) via
-[Telegram](https://t.me/ruslanrocketman1) or
+[Telegram](https://t.me/r_chukavin) or
 [email](mailto:r66cha@gmail.com).

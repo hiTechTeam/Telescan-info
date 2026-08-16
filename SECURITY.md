@@ -38,7 +38,8 @@ their permission.
 - Internal bot/API calls use a shared Bearer service secret and constant-time
   comparisons.
 - Internal moderation calls use a different Bearer secret, are blocked by the
-  public proxy, and expose no MongoDB credential to a moderation client.
+  public proxy, and expose no MongoDB credential to the allow-listed admin bot.
+  The bot records the acting moderator's Telegram ID on state changes.
 - Production API startup rejects built-in development secrets and wildcard or
   empty CORS configuration.
 - nginx permits TLS 1.2/1.3 and returns `404` for `/internal/`, Swagger, ReDoc,
@@ -46,8 +47,23 @@ their permission.
 - API and bot image contexts exclude host `.env` files, Git metadata, local
   virtual environments, tests, and tool caches. Runtime secrets are injected by
   Compose rather than copied into image layers.
-- API and bot containers use restart policies and health endpoints; deployment
-  waits for the resulting Docker health state.
+- API, user-bot, and admin-bot containers use restart policies and health
+  endpoints; deployment waits for the resulting Docker health state.
+- API, user-bot, and admin-bot processes run as unprivileged users. Their
+  Compose services use read-only root filesystems, bounded tmpfs mounts, dropped
+  Linux capabilities, and `no-new-privileges`; only the admin bot's SQLite data
+  volume is writable.
+- Production MongoDB credentials and encrypted-backup credentials live in a
+  host `.env` with mode `600`. Daily Restic snapshots are encrypted client-side,
+  restored to an isolated verification volume, checked with
+  `mongorestore --dryRun`, and retained as 7 daily, 5 weekly, and 12 monthly
+  snapshots.
+- Certificate renewal runs twice per day through a systemd timer and reloads
+  nginx after a successful Certbot renewal command.
+- Every repository protects `main` with pull requests, blocks force-pushes and
+  deletion, and enables GitHub secret scanning with push protection,
+  vulnerability alerts, and Dependabot security updates. iOS also requires its
+  `Build and test` status check.
 - The iOS target declares its app-only `UserDefaults` access in its privacy
   manifest using Apple's required `CA92.1` reason.
 - The app has no advertising or third-party analytics SDKs.
@@ -73,9 +89,9 @@ proximity, ownership, or authenticity.
   resets on restart.
 - `BOT_SERVICE_SECRET` is a long-lived shared credential and requires external
   rotation and secret-management procedures.
-- `MODERATION_SERVICE_SECRET` is also long-lived; the planned allow-listed
-  admin bot must protect it and record the individual moderator Telegram ID in
-  every decision.
+- `MODERATION_SERVICE_SECRET` is also long-lived; the deployed allow-listed
+  admin bot must continue to protect it and preserve individual moderator audit
+  attribution.
 - The current iOS MVP cannot remotely revoke only the sessions on other
   devices. Current-device logout and account deletion remain available; the
   retained logout-all backend is not exposed until a reliable client delivery
@@ -84,8 +100,9 @@ proximity, ownership, or authenticity.
   cannot be guaranteed continuously.
 - A feature-flagged legacy API exists for a short migration window. Enabling it
   restores weaker compatibility behavior and must be treated as temporary.
-- The repository tests do not replace physical-device BLE testing, production
-  backup/restore drills, storage permission review, or deployment monitoring.
+- Repository tests and the initial verified production backup do not replace
+  physical-device BLE testing, recurring recovery drills, centralized alerting,
+  storage permission review, or deployment monitoring.
 
 Telescan is intended for public-profile discovery and must not be used to share
 sensitive information or as a safety, ranging, access-control, or identity

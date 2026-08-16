@@ -22,26 +22,33 @@ boundaries:
   reports, blocking, and account deletion.
 - **Telegram bot:** Telegram commands, current profile-data forwarding, display
   of one-time codes, and server-side confirmation messages.
+- **Admin bot:** allow-listed Telegram moderation for report review, decisions,
+  notes, notifications, and moderator attribution.
 - **API:** the only application service that reads or writes MongoDB and
   S3-compatible photo storage.
-- **Database repository:** MongoDB 8 runtime configuration only.
-- **nginx:** TLS termination and public routing policy.
+- **Database repository:** MongoDB 8 runtime plus encrypted off-host backup and
+  restore-validation automation.
+- **nginx:** TLS termination, automatic certificate renewal, and public routing
+  policy.
 
 ```mermaid
 flowchart LR
     U["User"] --> BOT["Telegram bot"]
+    M["Allow-listed moderator"] --> ADMIN["Admin bot"]
     U --> IOS["iOS app"]
     IOS <-->|"BLE: telescan_id"| PEER["Nearby iOS app"]
     IOS -->|"HTTPS + device session"| API["Telescan API"]
     PEER -->|"HTTPS + device session"| API
     BOT -->|"Internal API + service secret"| API
+    ADMIN -->|"Moderation API + separate secret"| API
     API -->|"Confirmation notification"| BOT
     API --> DB[("MongoDB")]
     API --> S3[("Photo storage")]
+    DB -->|"Encrypted daily snapshot"| BACKUP[("Off-host Restic repository")]
     IOS --> TG["Telegram profile"]
 ```
 
-The bot and iOS app never receive MongoDB or S3 credentials.
+The iOS app, user bot, and admin bot never receive MongoDB or S3 credentials.
 
 ## Registration, identity, and sessions
 
@@ -101,6 +108,25 @@ device sessions, and the user record. Existing reports lose their direct
 database relation to the deleted account and follow their moderation-retention
 window. Local tokens, profile metadata, blocked-ID cache, BLE state, stored
 images, and caches are cleared only after the server confirms deletion.
+
+## Reports, blocking, and moderation
+
+The iOS profile sheet offers native report and block actions. Reports use a
+client request UUID for idempotency and capture the target's current shared
+profile, reason, optional context, status, timestamps, and moderator audit
+fields. Repeated pending reports from the same reporter, target, and reason
+collapse to one record.
+
+Blocking is enforced by the API in both lookup directions. The app removes a
+blocked profile from its list and open sheet, suppresses aggregate background
+notifications for that identity, and caches the last successful blocked-ID set
+for offline suppression. Users can list and remove their blocks in the app.
+
+The deployed admin bot is restricted to configured Telegram IDs and accesses
+reports only through the private moderation API with a credential separate from
+the user-bot secret. It can move reports through pending, reviewing, resolved,
+and dismissed states, attach moderator notes, and records the acting moderator.
+It has no MongoDB credentials and exposes no public port.
 
 ## BLE discovery protocol
 
@@ -214,8 +240,10 @@ relative proximity hint, not a physical measurement or safety boundary.
 Implemented protections include one-time HMAC-protected link codes,
 Keychain-backed client tokens, rotating refresh tokens, per-request session
 validation, authenticated own-account mutations, a service credential for bot
-traffic, explicit production secrets, TLS, and public proxy denial of internal
-and documentation routes.
+traffic, a separate moderation credential, explicit production secrets,
+unprivileged read-only application containers, encrypted verified database
+backups, TLS renewal automation, protected repository branches, and public proxy
+denial of internal and documentation routes.
 
 Current limitations remain:
 
@@ -224,8 +252,8 @@ Current limitations remain:
 - BLE identifiers and RSSI can be observed, replayed, or manipulated;
 - the rate limiter is process-local and resets on restart;
 - the bot service credential is a shared long-lived secret;
-- the separate human-facing moderation client is not deployed yet, although
-  the service-authenticated moderation API is implemented;
+- moderation currently uses a small allow-listed Telegram bot rather than a
+  full case-management console or multi-role permission model;
 - remote multi-device logout is not exposed by the current iOS MVP;
 - background BLE behavior is controlled by iOS;
 - the legacy API must remain disabled except during the controlled migration
@@ -234,16 +262,38 @@ Current limitations remain:
 Telescan should be understood as public-profile discovery, not anonymity,
 mutual identity proof, precise ranging, or end-to-end encryption.
 
+## Operations and repository controls
+
+The API, user bot, and admin bot run under unprivileged container users. Compose
+uses read-only root filesystems, bounded tmpfs mounts, dropped Linux
+capabilities, and `no-new-privileges`; the admin bot has one writable SQLite
+volume for notification deduplication. API and user-bot deployments wait for
+their health checks, and MongoDB is published only on server loopback.
+
+A systemd timer creates a compressed MongoDB archive daily, validates it before
+upload, stores it in a client-side encrypted Restic repository, restores the
+latest snapshot into a verification volume, validates it again with
+`mongorestore --dryRun`, and retains 7 daily, 5 weekly, and 12 monthly snapshots.
+The first production restore validation completed successfully on August 16,
+2026. A separate timer runs Certbot twice per day and reloads nginx after a
+successful renewal command.
+
+All seven repositories protect `main` with pull requests, prevent force-pushes
+and deletion, and enable secret scanning with push protection, vulnerability
+alerts, and Dependabot security updates. The iOS repository additionally
+requires its Xcode 26.3 `Build and test` check before merge.
+
 ## Verification status
 
 The current repositories include automated API authentication/deletion and
 readiness tests, bot service/confirmation/liveness tests, iOS token-refresh
 concurrency tests, BLE manager tests, Compose validation, Python
 linting/formatting/type checks, Debug/Release iOS builds, secret-safe Docker build
-contexts, health-gated API/bot deployment, restart policies, and an app-owned iOS
-privacy manifest. Physical-device BLE, production MongoDB/S3 migration,
-certificate renewal, backup/restore, monitoring, and full deployment verification
-remain operational checks.
+contexts, health-gated deployments, hardened application containers, automated
+certificate renewal, a verified encrypted production backup, repository security
+controls, and an app-owned iOS privacy manifest. Physical-device BLE, production
+MongoDB/S3 migration, recurring disaster-recovery drills, centralized monitoring,
+alerting, and documented log retention remain operational checks.
 
 This document describes the implementation on August 16, 2026. Source code is
 licensed under the [MIT License](./LICENSE).
