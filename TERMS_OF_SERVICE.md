@@ -2,7 +2,7 @@
 
 **Public page:** [tgtelescan.ru/terms](https://tgtelescan.ru/terms)
 
-**Effective date:** August 15, 2026
+**Effective date:** August 16, 2026
 
 These Terms govern use of the Telescan iOS app, Telegram bot, API, and related
 services. By continuing in the app or using the service, you agree to these
@@ -42,6 +42,12 @@ You can replace or remove your profile photo, sign out, or permanently delete
 the Telescan account in the app. Account deletion does not delete or modify the
 connected Telegram account.
 
+You can report a profile and block another Telescan account. Blocking removes
+profile visibility in both directions until you unblock it. Submit reports in
+good faith and include only information relevant to the suspected violation.
+Do not use reports to harass, retaliate against, or knowingly make false claims
+about another person.
+
 ## Acceptable use
 
 Do not use Telescan to:
@@ -55,8 +61,9 @@ Do not use Telescan to:
 - use automated access or reverse engineering in violation of applicable law,
   platform rules, or license terms.
 
-We may restrict or terminate access when reasonably necessary to protect users,
-protect the service, prevent abuse, or comply with law.
+We may review reports and restrict or terminate access when reasonably
+necessary to protect users, protect the service, prevent abuse, or comply with
+law. A report does not guarantee a particular outcome or response time.
 
 ## Third-party services
 

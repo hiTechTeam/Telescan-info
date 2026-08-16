@@ -9,7 +9,8 @@ small authenticated backend manages accounts, sessions, profiles, and photos.
 The current product scope is intentionally narrow: link an account through a
 Telegram bot, enable discovery in the iOS app, see nearby Telescan identities,
 load their shared profiles, and open a selected Telegram username. Telescan has
-no chat, GPS tracking, encounter history, analytics, or advertising system.
+native reporting and profile blocking, but no chat, GPS tracking, encounter
+history, analytics, or advertising system.
 
 ## System architecture
 
@@ -18,7 +19,7 @@ boundaries:
 
 - **iOS app:** registration, Keychain-backed device sessions, BLE scanning and
   advertising, approximate distance, profile display, photo management, logout,
-  and account deletion.
+  reports, blocking, and account deletion.
 - **Telegram bot:** Telegram commands, current profile-data forwarding, display
   of one-time codes, and server-side confirmation messages.
 - **API:** the only application service that reads or writes MongoDB and
@@ -95,9 +96,11 @@ future multi-device logout UI should use reliable push delivery rather than
 continuous client polling.
 
 Account deletion is separate from logout. The API revokes sessions first, then
-removes owned photos, link codes, confirmation requests, device sessions, and
-the user record. Local tokens, profile metadata, BLE state, stored images, and
-caches are cleared only after the server confirms deletion.
+removes owned photos, link codes, confirmation requests, block relationships,
+device sessions, and the user record. Existing reports lose their direct
+database relation to the deleted account and follow their moderation-retention
+window. Local tokens, profile metadata, blocked-ID cache, BLE state, stored
+images, and caches are cleared only after the server confirms deletion.
 
 ## BLE discovery protocol
 
@@ -143,6 +146,11 @@ and cancels resolution when presence is lost. CoreBluetooth state-restoration
 identifiers are configured, but iOS still controls background scheduling, so
 continuous discovery is not guaranteed.
 
+Background nearby notifications contain only aggregate counts. A BLE identity
+is counted only after the authenticated API returns a complete, accessible
+profile. The last successful blocked-ID set is cached locally, so offline BLE
+events do not reintroduce profiles blocked by the current account.
+
 The random BLE identifier reduces direct exposure of the Telegram numeric ID,
 but it is still a stable public pseudonym that nearby observers can capture,
 replay, or correlate until the Telescan account is deleted.
@@ -155,7 +163,10 @@ replay, or correlate until the Telescan account is deleted.
 | Session management | `/api/v1/auth/session`; retained `/api/v1/auth/logout-all/request` compatibility flow | Active access JWT and session |
 | Own account | `/api/v1/users/me`, `/api/v1/users/me/photo` | Active access JWT and session |
 | Nearby profiles | `/api/v1/profiles/{telescan_id}` | Active access JWT and session |
+| Reports | `/api/v1/reports` | Active access JWT and session |
+| Blocks | `/api/v1/users/me/blocks...` | Active access JWT and session |
 | Bot operations | `/internal/v1/...` | Shared bot service Bearer secret |
+| Moderation operations | `/internal/v1/moderation/reports...` | Separate moderation service Bearer secret |
 | Legal pages | `/privacy`, `/terms` | Public |
 
 Legacy `/v1` endpoints exist only behind the `ENABLE_LEGACY_API` migration
@@ -174,9 +185,15 @@ MongoDB currently contains:
 - `device_sessions`: installation ID, refresh-token digest, expiry, activity,
   and revocation metadata;
 - `confirmation_requests`: public request ID, action, status, expiry, and
-  temporary Telegram chat/message IDs.
+  temporary Telegram chat/message IDs;
+- `reports`: reporter and target Telescan IDs, reason, optional context, target
+  profile snapshot, review state, moderator audit fields, and retention time;
+- `blocks`: unique blocker/target relation, target profile snapshot, and time.
 
-Link codes, sessions, and confirmations have TTL indexes. MongoDB TTL cleanup is
+Link codes, sessions, confirmations, and resolved or dismissed reports have TTL
+indexes. Report creation is idempotent and duplicate pending reports from the
+same reporter, target, and reason collapse to one record. Profile access is
+hidden with `404` when either user has blocked the other. MongoDB TTL cleanup is
 asynchronous, so an expired document may remain stored briefly after it is no
 longer accepted by application logic. Profile objects use the
 `users/{telescan_id}/...` prefix in S3-compatible storage.
@@ -207,6 +224,8 @@ Current limitations remain:
 - BLE identifiers and RSSI can be observed, replayed, or manipulated;
 - the rate limiter is process-local and resets on restart;
 - the bot service credential is a shared long-lived secret;
+- the separate human-facing moderation client is not deployed yet, although
+  the service-authenticated moderation API is implemented;
 - remote multi-device logout is not exposed by the current iOS MVP;
 - background BLE behavior is controlled by iOS;
 - the legacy API must remain disabled except during the controlled migration
@@ -226,5 +245,5 @@ privacy manifest. Physical-device BLE, production MongoDB/S3 migration,
 certificate renewal, backup/restore, monitoring, and full deployment verification
 remain operational checks.
 
-This document describes the implementation on August 15, 2026. Source code is
+This document describes the implementation on August 16, 2026. Source code is
 licensed under the [MIT License](./LICENSE).

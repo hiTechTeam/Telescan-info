@@ -1,11 +1,13 @@
 # Telescan Roadmap
 
-**Last reviewed:** August 15, 2026
+**Last reviewed:** August 16, 2026
 
 Telescan currently provides iOS-to-iOS BLE discovery, Telegram account linking,
 random public BLE identities, authenticated per-device sessions, rotating
 refresh tokens, fresh Telegram profile synchronization, current-device logout,
 and in-app account deletion. The current iOS MVP does not expose logout-all.
+Authenticated reports, two-way profile blocking, a local blocked-profile cache,
+and in-app unblock management are implemented.
 
 ## Completed foundations
 
@@ -24,6 +26,9 @@ and in-app account deletion. The current iOS MVP does not expose logout-all.
 - Secret-safe API and bot Docker build contexts plus restart and health policies.
 - App-owned iOS privacy manifest for the required `UserDefaults` API reason.
 - API, bot, and iOS automated tests plus Python lint, format, and type checks.
+- Idempotent profile reports with target snapshots and moderation state.
+- Two-way server-enforced blocking, offline-safe iOS suppression, and unblock UI.
+- Service-authenticated internal moderation endpoints for a future admin client.
 
 ## Current priorities
 
@@ -39,6 +44,7 @@ and in-app account deletion. The current iOS MVP does not expose logout-all.
 | Android | Build an interoperable Android client after the BLE protocol is versioned | Planned |
 | Product | Publish focused onboarding, support, and operational status documentation | Planned |
 | Sessions | Revisit multi-device logout after APNs and an Apple Developer account are available; avoid foreground polling as the final design | Deferred for MVP |
+| Moderation | Build the separate allow-listed `telescan_admin` bot on the existing internal moderation API and define the moderator response SLA | Next |
 
 ## Design constraints
 

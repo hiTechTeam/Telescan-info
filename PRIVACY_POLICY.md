@@ -2,7 +2,7 @@
 
 **Public page:** [tgtelescan.ru/privacy](https://tgtelescan.ru/privacy)
 
-**Effective date:** August 15, 2026
+**Effective date:** August 16, 2026
 
 Telescan is an iOS app for discovering nearby users and opening the public
 Telegram profiles they choose to share. This policy describes data processed by
@@ -81,6 +81,21 @@ The iOS app may store:
 Nearby profiles are retained in memory while devices are visible and may also
 be present in normal image or URL caches.
 
+### Reports and blocks
+
+When you report a profile, the API stores a random report ID, your and the
+reported account's Telescan IDs, the selected reason, an optional comment, the
+reported name, username, and photo URL as they appeared at that time, report
+status, timestamps, and any later moderator actor and note. Capturing the
+snapshot prevents a profile edit from removing the context a moderator needs.
+The reported user is not shown the reporter's identity.
+
+When you block a profile, the API stores the two internal account IDs, the
+blocked Telescan ID, a profile snapshot, and creation time. The iOS app also
+caches blocked Telescan IDs in `UserDefaults` so blocked profiles and nearby
+notifications remain suppressed during a network outage. A block makes profile
+lookups unavailable in both directions and can be removed from the app.
+
 ### Operational request data
 
 Web infrastructure may process IP address, timestamp, requested path, response
@@ -97,8 +112,9 @@ does not include advertising or third-party analytics SDKs.
 ## How data is used and shared
 
 Data is used to link accounts, maintain authenticated device sessions, display
-shared profiles, manage photos, operate nearby discovery, support retained
-server-side confirmation actions, prevent abuse, and maintain the service.
+shared profiles, manage photos, operate nearby discovery, process reports and
+blocks, support retained server-side confirmation actions, prevent abuse, and
+maintain the service.
 Telescan does not sell personal data.
 
 Data may be disclosed:
@@ -108,6 +124,8 @@ Data may be disclosed:
 - to Telegram when the bot sends codes or confirmation messages;
 - to infrastructure providers needed to operate HTTPS, MongoDB, and photo
   storage;
+- to authorized moderators who need report records and captured profile
+  context to review possible abuse;
 - when required by applicable law or a valid legal request.
 
 Telegram and Apple process data under their own terms and privacy policies.
@@ -128,6 +146,13 @@ logic has already stopped accepting the expired record. Revoked sessions may
 remain until deletion or expiry. Operational logs follow the retention and
 rotation settings of deployed infrastructure.
 
+Blocks remain until you unblock the profile or either Telescan account is
+deleted. Pending and reviewing reports remain until a moderation decision.
+Resolved and dismissed reports are scheduled for automatic deletion 180 days
+after that decision. Account deletion removes the live database relation to the
+deleted reporter or reported account; a report snapshot and Telescan ID may be
+retained for the remaining moderation and abuse-prevention period.
+
 Local session and profile data remain until logout, account deletion, or normal
 cache eviction, depending on the item. The installation UUID is retained across
 logout and account deletion so a later link can identify the same installation;
@@ -138,9 +163,11 @@ deleted. It is removed only when the corresponding Keychain item is erased.
 
 Open your profile in the app, select **Delete account**, and confirm. After the
 server accepts the authenticated request, Telescan revokes all sessions and
-removes profile photos, link codes, confirmation requests, device sessions, and
-the account record. The app then clears local tokens, profile data, BLE state,
-stored images, and caches. This operation cannot be undone.
+removes profile photos, link codes, confirmation requests, block relationships,
+device sessions, and the account record. Existing abuse reports follow the
+limited retention and relationship-removal rules above. The app then clears
+local tokens, profile data, blocked-ID cache, BLE state, stored images, and
+caches. This operation cannot be undone.
 
 Deleting a Telescan account does not delete or modify your Telegram account.
 Information that must be retained by law may be kept only for the legally
@@ -148,8 +175,9 @@ required period.
 
 ## Your choices
 
-You can disable discoverability, replace or remove your profile photo, sign out
-the current device, or permanently delete the account and all its sessions.
+You can disable discoverability, replace or remove your profile photo, report
+or block a profile, manage blocked profiles, sign out the current device, or
+permanently delete the account and all its sessions.
 Depending on applicable law, you may also have rights to access, correct,
 restrict, delete, or object to processing of personal data.
 

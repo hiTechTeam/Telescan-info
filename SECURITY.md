@@ -30,10 +30,15 @@ their permission.
 - Refresh-token reuse revokes the affected session.
 - Own-profile reads, photo mutations, logout, nearby-profile reads, and account
   deletion require an active access token and session.
+- Report and block mutations require an active session, reject self-targeting,
+  and are rate-limited by authenticated user ID. Profile lookup returns `404`
+  when either account has blocked the other.
 - The retained server-side logout-all flow requires a second-channel decision
   from the linked Telegram user; the current iOS MVP does not expose it.
 - Internal bot/API calls use a shared Bearer service secret and constant-time
   comparisons.
+- Internal moderation calls use a different Bearer secret, are blocked by the
+  public proxy, and expose no MongoDB credential to a moderation client.
 - Production API startup rejects built-in development secrets and wildcard or
   empty CORS configuration.
 - nginx permits TLS 1.2/1.3 and returns `404` for `/internal/`, Swagger, ReDoc,
@@ -68,6 +73,9 @@ proximity, ownership, or authenticity.
   resets on restart.
 - `BOT_SERVICE_SECRET` is a long-lived shared credential and requires external
   rotation and secret-management procedures.
+- `MODERATION_SERVICE_SECRET` is also long-lived; the planned allow-listed
+  admin bot must protect it and record the individual moderator Telegram ID in
+  every decision.
 - The current iOS MVP cannot remotely revoke only the sessions on other
   devices. Current-device logout and account deletion remain available; the
   retained logout-all backend is not exposed until a reliable client delivery

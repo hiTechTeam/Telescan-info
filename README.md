@@ -25,7 +25,8 @@ require internet access.
 3. Enable discovery. The app advertises a random public `telescan_id`, not a
    Telegram ID or authentication token.
 4. Select a nearby device. The app uses its authenticated API session to load
-   the shared profile and can open its Telegram username.
+   the shared profile, can open its Telegram username, and offers native report
+   and block actions.
 
 ![Data transmitted between nearby devices](./docs/images/slide2.png)
 
@@ -52,9 +53,11 @@ approximate distance stay on the iPhone.
 
 The service stores the Telegram account fields needed for the shared profile, a
 random `telescan_id`, profile photos, one-time link-code digests, device-session
-metadata, and temporary server-side confirmation records. Users control
-discoverability, can sign out the current device, and can permanently delete
-the Telescan account and owned data from the app.
+metadata, temporary server-side confirmation records, user-created blocks, and
+moderation reports. Reports contain the selected reason, optional context, and
+a snapshot of the reported profile so later profile edits do not erase review
+context. Users control discoverability, can manage blocked profiles, sign out
+the current device, and permanently delete the Telescan account from the app.
 Deleting Telescan does not delete or modify the connected Telegram account.
 
 ## Documentation

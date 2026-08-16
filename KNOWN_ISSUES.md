@@ -1,6 +1,6 @@
 # Known Issues
 
-**Last reviewed:** August 15, 2026
+**Last reviewed:** August 16, 2026
 
 ## BLE discovery is not continuous in the background
 
@@ -41,6 +41,14 @@ actually nearby.
 Current API throttling is stored in memory. It resets on restart and is not
 shared between multiple API replicas. Do not horizontally scale the API without
 a shared rate-limit adapter and an updated abuse model.
+
+## Moderation client is not deployed yet
+
+The API accepts reports, stores review context, and exposes a separate
+service-authenticated moderation contract. The iOS app can report, block, list,
+and unblock profiles. The dedicated allow-listed admin bot that consumes the
+moderation contract is planned as a separate repository; until it is deployed,
+operators must inspect reports through the private internal API tunnel.
 
 ## Remote multi-device logout is not exposed in the iOS MVP
 
