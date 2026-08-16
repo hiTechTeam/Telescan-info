@@ -7,8 +7,9 @@
 Telescan is an iOS app for discovering nearby users and opening the public
 Telegram profiles they choose to share. This policy describes data processed by
 the Telescan app, Telegram bot, API, MongoDB database, web proxy, and
-S3-compatible profile-photo storage. Use of the service is also governed by the
-[Terms of Service](./TERMS_OF_SERVICE.md).
+S3-compatible profile-photo storage and encrypted database-backup storage. Use
+of the service is also governed by the [Terms of
+Service](./TERMS_OF_SERVICE.md).
 
 ## Data we process
 
@@ -122,8 +123,8 @@ Data may be disclosed:
 - to authenticated Telescan users who receive or otherwise know your advertised
   `telescan_id`;
 - to Telegram when the bot sends codes or confirmation messages;
-- to infrastructure providers needed to operate HTTPS, MongoDB, and photo
-  storage;
+- to infrastructure providers needed to operate HTTPS, MongoDB, photo storage,
+  and encrypted backup storage;
 - to authorized moderators who need report records and captured profile
   context to review possible abuse;
 - when required by applicable law or a valid legal request.
@@ -146,6 +147,13 @@ logic has already stopped accepting the expired record. Revoked sessions may
 remain until deletion or expiry. Operational logs follow the retention and
 rotation settings of deployed infrastructure.
 
+Production database backups are stored in a client-side encrypted off-host
+Restic repository. Automation retains up to 7 daily, 5 weekly, and 12 monthly
+snapshots. Backup data is not used for normal profile access or product
+analytics; it is accessed for recovery and restore verification. Data deleted
+from the live service may remain inside an encrypted snapshot until that
+snapshot expires under this rotation.
+
 Blocks remain until you unblock the profile or either Telescan account is
 deleted. Pending and reviewing reports remain until a moderation decision.
 Resolved and dismissed reports are scheduled for automatic deletion 180 days
@@ -167,7 +175,9 @@ removes profile photos, link codes, confirmation requests, block relationships,
 device sessions, and the account record. Existing abuse reports follow the
 limited retention and relationship-removal rules above. The app then clears
 local tokens, profile data, blocked-ID cache, BLE state, stored images, and
-caches. This operation cannot be undone.
+caches. Live-service deletion cannot be undone. Encrypted backup copies age out
+under the backup-retention schedule described above and are not restored for
+ordinary account recovery.
 
 Deleting a Telescan account does not delete or modify your Telegram account.
 Information that must be retained by law may be kept only for the legally

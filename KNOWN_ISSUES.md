@@ -42,13 +42,22 @@ Current API throttling is stored in memory. It resets on restart and is not
 shared between multiple API replicas. Do not horizontally scale the API without
 a shared rate-limit adapter and an updated abuse model.
 
-## Moderation client is not deployed yet
+## Moderation currently uses an allow-listed Telegram bot
 
-The API accepts reports, stores review context, and exposes a separate
-service-authenticated moderation contract. The iOS app can report, block, list,
-and unblock profiles. The dedicated allow-listed admin bot that consumes the
-moderation contract is planned as a separate repository; until it is deployed,
-operators must inspect reports through the private internal API tunnel.
+The deployed admin bot polls the private moderation API, notifies configured
+Telegram IDs, and supports reviewing, resolving, dismissing, and moderator
+notes. It is intentionally a small operational interface rather than a full
+admin console: there is no case assignment, analytics dashboard, formal response
+SLA, or multi-role permission model yet. The API remains the source of truth and
+records the individual moderator Telegram ID with each decision.
+
+## Some VPN routes may not reach the Moscow API reliably
+
+The production API is hosted in Yandex Cloud and some European VPN providers
+intermittently fail to route traffic to it. The app does not bypass a user's VPN
+or embed a proxy. An EU relay has not been introduced; operators should measure
+real providers before adding another network hop and document any future relay
+as part of the production trust boundary.
 
 ## Remote multi-device logout is not exposed in the iOS MVP
 
@@ -70,3 +79,10 @@ The old `/v1` contract is registered only when `ENABLE_LEGACY_API=true`. It is
 less secure than the session-based API and must remain disabled except during a
 controlled old-client migration. Removing legacy user hashes requires the
 explicit guarded migration command documented in `Telescan-api`.
+
+## Operational monitoring is still limited
+
+TLS renewal and encrypted daily MongoDB backups are automated, and the first
+production backup was restored to a verification volume successfully. Centralized
+metrics, alert delivery, log retention policy, and scheduled end-to-end disaster
+recovery drills are still required before the operational layer is complete.
