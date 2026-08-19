@@ -1,6 +1,6 @@
 # Telescan Public Roadmap
 
-**Last reviewed: August 17, 2026.**
+**Last reviewed: August 19, 2026.**
 
 This roadmap describes product direction, not a release commitment. Priorities
 may change after testing, user feedback, platform changes, or security review.
@@ -15,28 +15,27 @@ may change after testing, user feedback, platform changes, or security review.
 - Current-device logout and account deletion.
 - Profile-photo refresh and local offline account cache.
 - Reports, blocks, and in-app block management.
+- Restricted moderation workflow for reviewing user reports.
 - Aggregated nearby notifications that avoid exposing profile names.
+- Production metrics, centralized logs, dashboards, and operational alerts.
+- Encrypted off-host MongoDB backups with a completed restore drill.
 - English and Russian product and legal information.
 
 ## Before a broad public launch
 
-- Complete Apple Developer enrollment, production signing, TestFlight testing,
-  and App Store review materials.
-- Expand physical-device, iOS-version, accessibility, and background-behavior
-  testing.
-- Add production monitoring and operational alerts.
-- Refine onboarding, support information, privacy explanations, and moderation
-  response processes.
+- Complete production signing, TestFlight validation, and App Store review
+  materials.
+- Finish accessibility and supported-iOS regression testing.
+- Calibrate alert thresholds and formalize moderation response ownership.
+- Schedule recurring recovery drills.
 
 ## Later directions
 
 - Improve accessibility and localization.
 - Refine nearby-notification controls and aggregation.
 - Explore a more privacy-preserving versioned Bluetooth identity protocol.
-- Build a dedicated moderation interface as the community grows.
+- Expand moderation tools as the community grows.
 - Consider Android interoperability after the Bluetooth contract is stable.
-- Create a separate public native-UI laboratory for community UX and design
-  proposals without publishing the private application core.
 
 The core implementation repositories are private. Public release timing and
 feature scope will be announced separately when confirmed.

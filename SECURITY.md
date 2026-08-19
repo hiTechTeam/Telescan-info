@@ -1,6 +1,6 @@
 # Telescan Security Policy
 
-**Last reviewed: August 17, 2026.**
+**Last reviewed: August 19, 2026.**
 
 ## Reporting a vulnerability
 
