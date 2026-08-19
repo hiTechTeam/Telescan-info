@@ -1,6 +1,6 @@
 # Telescan
 
-**Last reviewed: August 17, 2026.**
+**Last reviewed: August 19, 2026.**
 
 [![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org)
 [![iOS](https://img.shields.io/badge/iOS-17.6+-blue.svg)](https://developer.apple.com/ios/)
@@ -70,6 +70,6 @@ The current public legal pages are also available at
 
 ## License
 
-Copyright © 2025–2026 Ruslan Chukavin. All rights reserved. The documentation,
+Copyright © 2021 - 2026 Ruslan Chukavin. All rights reserved. The documentation,
 branding, and other materials in this repository are not open source. See
 [LICENSE](./LICENSE).
