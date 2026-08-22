@@ -10,7 +10,7 @@ Telescan is an iOS extension for Telegram that helps people nearby exchange the
 public Telegram usernames they choose to share. Nearby discovery uses Bluetooth
 Low Energy; profiles are loaded only for authenticated Telescan users.
 
-![Telescan overview](./docs/images/slide1.png)
+![Telescan overview](./docs/images/slide3.jpg)
 
 ## How it works
 
@@ -20,7 +20,7 @@ Low Energy; profiles are loaded only for authenticated Telescan users.
 4. Open a nearby profile and copy its public Telegram username.
 5. Disable scanning at any time to stop advertising your Telescan profile.
 
-![Nearby exchange](./docs/images/slide2.png)
+![Nearby exchange](./docs/images/slide4.jpg)
 
 ## Privacy at a glance
 
