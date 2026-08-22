@@ -24,8 +24,6 @@ Low Energy; profiles are loaded only for authenticated Telescan users.
 
 https://github.com/user-attachments/assets/a3910e7c-c475-40b3-a3c3-43ab5ea79c30
 
-[Open the demonstration video file](./docs/video/telescan-ble-demo.mp4).
-
 ## Privacy at a glance
 
 - Nearby devices exchange a random Telescan profile identifier, not your
