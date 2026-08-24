@@ -2,7 +2,7 @@
 
 **Public page:** [tgtelescan.ru/terms](https://tgtelescan.ru/terms)
 
-**Effective date:** August 17, 2026
+**Effective date:** August 24, 2026
 
 These Terms govern use of the Telescan iOS app, Telegram bots, API, and related
 services. By using Telescan, you agree to these Terms and the [Privacy

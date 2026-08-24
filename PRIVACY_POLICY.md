@@ -2,7 +2,7 @@
 
 **Public page:** [tgtelescan.ru/privacy](https://tgtelescan.ru/privacy)
 
-**Effective date:** August 17, 2026
+**Effective date:** August 24, 2026
 
 Telescan is an iOS app for discovering nearby users and opening the public
 Telegram profiles they choose to share. This policy explains the information
@@ -49,6 +49,13 @@ server. Radio identifiers may still be observed or replayed by devices within
 range, and Bluetooth must not be treated as precise proof of identity or
 location.
 
+After a complete profile leaves the nearby list, the app may keep its public
+profile snapshot and last-seen time in a **Met** history on the current device.
+This history contains no GPS location or distance measurements, is not uploaded
+to Telescan servers, is limited to 500 profiles, and is automatically removed
+after 24 hours. You can clear it earlier; it is also cleared on sign-out or
+account deletion. Blocking a profile removes it from this local history.
+
 ### Reports, blocks, and moderation
 
 When you report a profile, Telescan processes identifiers for the reporting and
@@ -72,7 +79,7 @@ used for advertising or behavioral profiling.
 
 Telescan does not request or intentionally store:
 
-- GPS location or movement history;
+- GPS location or server-side movement history;
 - Telegram messages, contacts, or password;
 - advertising identifiers;
 - precise Bluetooth-distance history on the server;
@@ -136,6 +143,7 @@ Deletion cannot be undone and does not delete or modify your Telegram account.
 You can:
 
 - disable discoverability;
+- clear the device-local 24-hour encounter history;
 - replace or remove your shared photo;
 - report, block, or unblock profiles;
 - sign out the current device;

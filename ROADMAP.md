@@ -1,6 +1,6 @@
 # Telescan Public Roadmap
 
-**Last reviewed: August 19, 2026.**
+**Last reviewed: August 24, 2026.**
 
 This roadmap describes product direction, not a release commitment. Priorities
 may change after testing, user feedback, platform changes, or security review.
@@ -12,8 +12,10 @@ may change after testing, user feedback, platform changes, or security review.
 - Nearby iPhone discovery through Bluetooth Low Energy.
 - Complete-profile validation before a nearby user is displayed.
 - Approximate distance and a visible countdown before a lost profile disappears.
+- Stable discovery-order rows with distance labels refreshed every 10 seconds.
+- Device-local 24-hour history of profiles that have left the nearby list.
 - Current-device logout and account deletion.
-- Profile-photo refresh and local offline account cache.
+- Optional 60-character BIO, profile-photo refresh, and local offline cache.
 - Reports, blocks, and in-app block management.
 - Restricted moderation workflow for reviewing user reports.
 - Aggregated nearby notifications that avoid exposing profile names.
@@ -23,8 +25,8 @@ may change after testing, user feedback, platform changes, or security review.
 
 ## Before a broad public launch
 
-- Complete production signing, TestFlight validation, and App Store review
-  materials.
+- Complete Apple Developer enrollment, production signing, TestFlight
+  validation, and App Store submission.
 - Finish accessibility and supported-iOS regression testing.
 - Calibrate alert thresholds and formalize moderation response ownership.
 - Schedule recurring recovery drills.
