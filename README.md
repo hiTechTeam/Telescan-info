@@ -1,6 +1,6 @@
 # Telescan
 
-**Last reviewed: August 19, 2026.**
+**Last reviewed: August 24, 2026.**
 
 [![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org)
 [![iOS](https://img.shields.io/badge/iOS-17.6+-blue.svg)](https://developer.apple.com/ios/)
@@ -17,7 +17,7 @@ Low Energy; profiles are loaded only for authenticated Telescan users.
 1. Request a one-time linking code from the Telescan Telegram bot.
 2. Enter the code in the iOS app to connect the current device.
 3. Enable scanning when you want to be discoverable.
-4. Open a nearby profile and copy its public Telegram username.
+4. Open a nearby profile, then use its username to continue in Telegram.
 5. Disable scanning at any time to stop advertising your Telescan profile.
 
 ## Video demonstration
@@ -30,7 +30,11 @@ https://github.com/user-attachments/assets/a3910e7c-c475-40b3-a3c3-43ab5ea79c30
   Telegram password, messages, contacts, or phone number.
 - Bluetooth signal strength and approximate distance are processed on the
   device and are not sent to Telescan servers.
-- Telescan does not request GPS location or maintain movement history.
+- The app keeps a device-local list of profiles met during the last 24 hours;
+  it contains no GPS data or distance history, is never uploaded, and can be
+  cleared at any time.
+- Telescan does not request GPS location or maintain server-side movement
+  history.
 - Your Telescan ID is advertised nearby only while discoverability is enabled;
   an authenticated user who already knows that ID may still request the shared
   profile.
@@ -46,8 +50,9 @@ or precise proof that a person is physically present.
 
 The current client supports iOS 17.6 or newer and requires a Telegram account.
 An internet connection is required for account linking, profile loading,
-reports, blocks, photo updates, logout, and account deletion. Nearby Bluetooth
-detection alone does not guarantee that a complete profile can be displayed.
+BIO and photo updates, reports, blocks, logout, and account deletion. Nearby
+Bluetooth detection alone does not guarantee that a complete profile can be
+displayed.
 
 The core application and infrastructure are developed in private repositories.
 This public repository contains only product, policy, support, and
