@@ -1,6 +1,6 @@
 # Telescan
 
-**Last reviewed: August 24, 2026.**
+**Last reviewed: August 27, 2026.**
 
 [![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org)
 [![iOS](https://img.shields.io/badge/iOS-17.6+-blue.svg)](https://developer.apple.com/ios/)
@@ -14,11 +14,12 @@ Low Energy; profiles are loaded only for authenticated Telescan users.
 
 ## How it works
 
-1. Request a one-time linking code from the Telescan Telegram bot.
-2. Enter the code in the iOS app to connect the current device.
-3. Enable scanning when you want to be discoverable.
-4. Open a nearby profile, then use its username to continue in Telegram.
-5. Disable scanning at any time to stop advertising your Telescan profile.
+1. Authenticate the primary Telescan account with Sign in with Apple.
+2. Request a one-time linking code from the Telescan Telegram bot.
+3. Enter the code in the iOS app to attach the Telegram profile.
+4. Allow Bluetooth access; scanning starts automatically after registration.
+5. Open a nearby profile to continue in Telegram, or disable scanning at any
+   time to stop advertising the Telescan profile.
 
 ## Video demonstration
 

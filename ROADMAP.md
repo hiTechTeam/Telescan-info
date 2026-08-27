@@ -1,6 +1,6 @@
 # Telescan Public Roadmap
 
-**Last reviewed: August 24, 2026.**
+**Last reviewed: August 27, 2026.**
 
 This roadmap describes product direction, not a release commitment. Priorities
 may change after testing, user feedback, platform changes, or security review.
@@ -8,6 +8,7 @@ may change after testing, user feedback, platform changes, or security review.
 ## Available in the current MVP
 
 - Telegram account linking with a temporary one-time code.
+- Primary account authentication with Sign in with Apple.
 - Per-device authenticated iOS sessions.
 - Nearby iPhone discovery through Bluetooth Low Energy.
 - Complete-profile validation before a nearby user is displayed.
@@ -15,7 +16,7 @@ may change after testing, user feedback, platform changes, or security review.
 - Stable discovery-order rows with distance labels refreshed every 10 seconds.
 - Device-local 24-hour history of profiles that have left the nearby list.
 - Current-device logout and account deletion.
-- Optional 60-character BIO, profile-photo refresh, and local offline cache.
+- Optional 36-character BIO, profile-photo refresh, and local offline cache.
 - Reports, blocks, and in-app block management.
 - Restricted moderation workflow for reviewing user reports.
 - Aggregated nearby notifications that avoid exposing profile names.
