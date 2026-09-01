@@ -1,0 +1,28 @@
+{
+  "documents": {
+    "privacy": {
+      "en": {
+        "canonical_url": "https://tgtelescan.ru/privacy",
+        "effective_date": "2026-09-01"
+      },
+      "ru": {
+        "canonical_url": "https://tgtelescan.ru/privacy?lang=ru",
+        "effective_date": "2026-09-01"
+      }
+    },
+    "terms": {
+      "en": {
+        "canonical_url": "https://tgtelescan.ru/terms",
+        "effective_date": "2026-09-01"
+      },
+      "ru": {
+        "canonical_url": "https://tgtelescan.ru/terms?lang=ru",
+        "effective_date": "2026-09-01"
+      }
+    }
+  },
+  "legal_version": "2026-09-01",
+  "schema_version": 1,
+  "source": "legal/legal_documents.json",
+  "source_sha256": "f3bddc01a0013a89086044509ba85e1e63edc6bde7e45732a7e0c9803257045e"
+}

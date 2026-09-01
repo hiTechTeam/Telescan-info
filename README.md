@@ -65,13 +65,21 @@ security-contact information.
 ## Policies and project information
 
 - [Privacy Policy](./PRIVACY_POLICY.md)
+- [Политика конфиденциальности](./PRIVACY_POLICY.ru.md)
 - [Terms of Service](./TERMS_OF_SERVICE.md)
+- [Условия использования](./TERMS_OF_SERVICE.ru.md)
 - [Security Policy](./SECURITY.md)
 - [Public Roadmap](./ROADMAP.md)
 
 The current public legal pages are also available at
 [tgtelescan.ru/privacy](https://tgtelescan.ru/privacy) and
 [tgtelescan.ru/terms](https://tgtelescan.ru/terms).
+
+The localized policy pages are generated from the versioned source at
+[`legal/legal_documents.json`](./legal/legal_documents.json). The integrity
+manifest at [`legal/LEGAL_MANIFEST.json`](./legal/LEGAL_MANIFEST.json) records
+the approved version, effective dates, and SHA-256 source hash. Run
+`make legal` after editing the source and `make check` before publishing.
 
 ## Contact
 
