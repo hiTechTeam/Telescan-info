@@ -1,6 +1,6 @@
 # Telescan
 
-**Last reviewed: August 27, 2026.**
+**Last reviewed: September 1, 2026.**
 
 [![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org)
 [![iOS](https://img.shields.io/badge/iOS-17.6+-blue.svg)](https://developer.apple.com/ios/)
@@ -34,13 +34,16 @@ https://github.com/user-attachments/assets/a3910e7c-c475-40b3-a3c3-43ab5ea79c30
 - The app keeps a device-local list of profiles met during the last 24 hours;
   it contains no GPS data or distance history, is never uploaded, and can be
   cleared at any time.
+- Profiles you explicitly save remain only on the current device until you
+  remove them, sign out, or delete the account; they do not synchronize through
+  Telescan servers.
 - Telescan does not request GPS location or maintain server-side movement
   history.
 - Your Telescan ID is advertised nearby only while discoverability is enabled;
   an authenticated user who already knows that ID may still request the shared
   profile.
-- You can report or block a profile, remove your photo, sign out the current
-  device, or delete the Telescan account from the app.
+- You can submit a universal report or block a profile, remove your photo, sign
+  out the current device, or delete the Telescan account from the app.
 - Telescan contains no advertising or third-party behavioral analytics SDK.
 
 Bluetooth visibility and distance are approximate and may be delayed by iOS.

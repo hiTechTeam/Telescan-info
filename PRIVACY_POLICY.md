@@ -2,7 +2,7 @@
 
 **Public page:** [tgtelescan.ru/privacy](https://tgtelescan.ru/privacy)
 
-**Effective date:** August 24, 2026
+**Effective date:** September 1, 2026
 
 Telescan is an iOS app for discovering nearby users and opening the public
 Telegram profiles they choose to share. This policy explains the information
@@ -11,6 +11,13 @@ providers. Use of Telescan is also governed by the [Terms of
 Service](./TERMS_OF_SERVICE.md).
 
 ## Data we process
+
+### Apple account information
+
+When you use Sign in with Apple, Telescan receives a stable Apple account
+identifier. If you choose to share them, Telescan may also receive your name
+and email address or Apple private-relay email. Apple authenticates the primary
+Telescan account.
 
 ### Telegram profile information
 
@@ -52,16 +59,22 @@ location.
 After a complete profile leaves the nearby list, the app may keep its public
 profile snapshot and last-seen time in a **Met** history on the current device.
 This history contains no GPS location or distance measurements, is not uploaded
-to Telescan servers, is limited to 500 profiles, and is automatically removed
-after 24 hours. You can clear it earlier; it is also cleared on sign-out or
-account deletion. Blocking a profile removes it from this local history.
+to Telescan servers, and is automatically removed after 24 hours. You can clear
+it earlier; it is also cleared on sign-out or account deletion. Blocking a
+profile removes it from this local history.
+
+When you save another profile, the app keeps that public profile snapshot in a
+**Saved** list only on the current device. Saved profiles are not uploaded or
+synchronized between devices. They remain until you remove them, sign out, or
+delete the account from the device.
 
 ### Reports, blocks, and moderation
 
 When you report a profile, Telescan processes identifiers for the reporting and
-reported accounts, the selected reason, an optional comment, relevant profile
-context, timestamps, review status, and moderation audit information. The
-reported user is not shown the reporter's identity through the product.
+reported accounts, an optional comment, relevant profile context, timestamps,
+review status, and moderation audit information. The current product submits
+one universal report rather than asking you to select a category. The reported
+user is not shown the reporter's identity through the product.
 
 When you block a profile, Telescan stores the relationship and enough profile
 context to display and manage the block. Blocking hides profile access in both
@@ -92,6 +105,7 @@ Data is processed to:
 - create, authenticate, and maintain your Telescan account;
 - show the profile you choose to share to nearby authenticated users;
 - operate Bluetooth discovery and load complete profiles;
+- maintain the device-local Met and Saved lists you choose to use;
 - manage profile photos, device sessions, reports, and blocks;
 - review possible abuse and protect users and the service;
 - provide support, diagnose failures, and maintain availability;
@@ -128,6 +142,9 @@ reviewed; resolved or dismissed reports are scheduled for deletion after 180
 days. Operational records are retained only for periods reasonably required for
 security, reliability, abuse prevention, and legal obligations.
 
+Device-local Met entries are removed after 24 hours. Device-local Saved entries
+remain until you remove them, sign out, or delete the account on that device.
+
 ## Account and data deletion
 
 Open your profile in the app, choose **Delete account**, and confirm. Telescan
@@ -144,6 +161,7 @@ You can:
 
 - disable discoverability;
 - clear the device-local 24-hour encounter history;
+- save or remove public profile snapshots on the current device;
 - replace or remove your shared photo;
 - report, block, or unblock profiles;
 - sign out the current device;
