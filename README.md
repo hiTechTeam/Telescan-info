@@ -1,94 +1,38 @@
 # Telescan
 
-**Last reviewed: September 1, 2026.**
-
-[![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org)
-[![iOS](https://img.shields.io/badge/iOS-17.6+-blue.svg)](https://developer.apple.com/ios/)
-[![License](https://img.shields.io/badge/license-proprietary-lightgrey.svg)](./LICENSE)
-
-Telescan is an iOS extension for Telegram that helps people nearby exchange the
-public Telegram usernames they choose to share. Nearby discovery uses Bluetooth
-Low Energy; profiles are loaded only for authenticated Telescan users.
+Telescan is an iOS extension for Telegram. It uses Bluetooth Low Energy to help
+nearby authenticated users exchange the public Telegram profiles they choose
+to share.
 
 ![Telescan overview](./docs/images/slide3.jpg)
 
 ## How it works
 
-1. Authenticate the primary Telescan account with Sign in with Apple.
-2. Request a one-time linking code from the Telescan Telegram bot.
-3. Enter the code in the iOS app to attach the Telegram profile.
-4. Allow Bluetooth access; scanning starts automatically after registration.
-5. Open a nearby profile to continue in Telegram, or disable scanning at any
-   time to stop advertising the Telescan profile.
+1. Sign in and link a Telegram profile with a one-time bot code.
+2. Allow Bluetooth access.
+3. Open a nearby profile in Telegram or disable scanning at any time.
 
-## Video demonstration
+Telescan does not read Telegram messages or contacts and does not use GPS.
+Signal strength, approximate distance, 24-hour **Met** history and **Saved**
+profiles remain on the device. Bluetooth discovery is approximate and must not
+be used for navigation or safety decisions.
 
-https://github.com/user-attachments/assets/a3910e7c-c475-40b3-a3c3-43ab5ea79c30
+Requires iOS 17.6+, Telegram and internet access for account and profile
+operations.
 
-## Privacy at a glance
+## Policies
 
-- Nearby devices exchange a random Telescan profile identifier, not your
-  Telegram password, messages, contacts, or phone number.
-- Bluetooth signal strength and approximate distance are processed on the
-  device and are not sent to Telescan servers.
-- The app keeps a device-local list of profiles met during the last 24 hours;
-  it contains no GPS data or distance history, is never uploaded, and can be
-  cleared at any time.
-- Profiles you explicitly save remain only on the current device until you
-  remove them, sign out, or delete the account; they do not synchronize through
-  Telescan servers.
-- Telescan does not request GPS location or maintain server-side movement
-  history.
-- Your Telescan ID is advertised nearby only while discoverability is enabled;
-  an authenticated user who already knows that ID may still request the shared
-  profile.
-- You can submit a universal report or block a profile, remove your photo, sign
-  out the current device, or delete the Telescan account from the app.
-- Telescan contains no advertising or third-party behavioral analytics SDK.
-
-Bluetooth visibility and distance are approximate and may be delayed by iOS.
-Telescan must not be used for navigation, safety decisions, emergency response,
-or precise proof that a person is physically present.
-
-## Availability
-
-The current client supports iOS 17.6 or newer and requires a Telegram account.
-An internet connection is required for account linking, profile loading,
-BIO and photo updates, reports, blocks, logout, and account deletion. Nearby
-Bluetooth detection alone does not guarantee that a complete profile can be
-displayed.
-
-The core application and infrastructure are developed in private repositories.
-This public repository contains only product, policy, support, and
-security-contact information.
-
-## Policies and project information
-
-- [Privacy Policy](./PRIVACY_POLICY.md)
-- [Политика конфиденциальности](./PRIVACY_POLICY.ru.md)
-- [Terms of Service](./TERMS_OF_SERVICE.md)
-- [Условия использования](./TERMS_OF_SERVICE.ru.md)
+- [Privacy Policy](./PRIVACY_POLICY.md) · [Русский](./PRIVACY_POLICY.ru.md)
+- [Terms of Service](./TERMS_OF_SERVICE.md) · [Русский](./TERMS_OF_SERVICE.ru.md)
 - [Security Policy](./SECURITY.md)
 - [Public Roadmap](./ROADMAP.md)
 
-The current public legal pages are also available at
-[tgtelescan.ru/privacy](https://tgtelescan.ru/privacy) and
-[tgtelescan.ru/terms](https://tgtelescan.ru/terms).
+Current legal pages: [Privacy](https://tgtelescan.ru/privacy) and
+[Terms](https://tgtelescan.ru/terms).
 
-The localized policy pages are generated from the versioned source at
-[`legal/legal_documents.json`](./legal/legal_documents.json). The integrity
-manifest at [`legal/LEGAL_MANIFEST.json`](./legal/LEGAL_MANIFEST.json) records
-the approved version, effective dates, and SHA-256 source hash. Run
-`make legal` after editing the source and `make check` before publishing.
-
-## Contact
-
-- Developer: [Ruslan Chukavin](https://github.com/r66cha)
-- Telegram: [@r_chukavin](https://t.me/r_chukavin)
-- Email: [admin@tgtelescan.ru](mailto:admin@tgtelescan.ru)
+Contact: [@r_chukavin](https://t.me/r_chukavin) ·
+[admin@tgtelescan.ru](mailto:admin@tgtelescan.ru)
 
 ## License
 
-Copyright © 2021 - 2026 Ruslan Chukavin. All rights reserved. The documentation,
-branding, and other materials in this repository are not open source. See
-[LICENSE](./LICENSE).
+Copyright © 2021–2026 Ruslan Chukavin. See [LICENSE](./LICENSE).
