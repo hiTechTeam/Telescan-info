@@ -4,65 +4,60 @@
 
 **Public page:** [https://tgtelescan.ru/terms](https://tgtelescan.ru/terms)
 
-**Effective date:** September 1, 2026
+**Effective date:** September 12, 2026
 
-The terms for using the Telescan app, bots, API, and related services.
+Terms for using the serverless Telescan iOS app.
 
 ## Agreement
 
-These Terms govern use of the Telescan iOS app, Telegram bots, API, and related services. By using Telescan, you agree to these Terms and the [Privacy Policy](https://tgtelescan.ru/privacy). If you do not agree, do not use Telescan.
+These Terms govern your use of the Telescan iOS app. By using Telescan, you agree to these Terms and the [Privacy Policy](https://tgtelescan.ru/privacy). If you do not agree, do not use the app.
 
 ## The service
 
-Telescan helps nearby users discover and open public Telegram profiles their owners choose to share. Bluetooth Low Energy provides local discovery. An internet connection is required for registration, Sign in with Apple, Telegram linking, profile loading, photo management, reports, blocks, logout, and account deletion.
+Telescan helps people discover one another nearby and open Telegram usernames they choose to share. A Telescan account and internet connection are not required for nearby discovery. Opening Telegram, websites, or email requires the applicable third-party app or network access.
 
-Telescan is an experimental service. Bluetooth visibility and distance estimates may be delayed, incomplete, replayed, or inaccurate. Do not use Telescan for safety, navigation, emergencies, identity verification, or decisions that require precise physical proximity.
+Nearby visibility and distance are approximate and may be delayed, incomplete, duplicated, or unavailable, especially when iOS limits background activity. Do not rely on Telescan for navigation, safety, emergency assistance, identity verification, or proof of presence.
 
-## Your account and content
+## Your profile and content
 
-You must be permitted to use Apple services, Telegram, and Telescan under applicable law and platform rules. You are responsible for linked devices, accounts, profile information, BIO, and uploaded photos. Share only content you have the right to use.
+You are responsible for the name, Telegram username, description, and photo you enter and share. Use only information and content that you have the right to use. A Telegram username is self-declared and is not verified by Telegram or Telescan.
 
-Your Telescan ID is advertised nearby only while discoverability is enabled. Authenticated users who already know that identifier may still request the shared profile, and radio identifiers can be observed or replayed by devices in range.
-
-## Reports and blocks
-
-You may report or block a profile. Reports must be submitted in good faith, contain only relevant information, and may include an optional comment. A report does not guarantee a particular decision or response time. Blocking hides profile access in both directions until removed.
+When scanning is enabled, people nearby may receive, save, copy, or redistribute your profile. Turning scanning off, editing the profile, or deleting it does not recall copies already received by other people.
 
 ## Acceptable use
 
-Do not use Telescan to:
+You must not use Telescan to:
 
-- Harass, stalk, threaten, impersonate, deceive, or harm another person
-- Collect, publish, or misuse another person's information
-- Upload unlawful content or content that infringes another person's rights
-- Submit knowingly false, abusive, or retaliatory reports
-- Probe, disrupt, overload, bypass, or interfere with the service or its security
-- Use automation or reverse engineering in violation of applicable law or platform terms
+- Harass, threaten, stalk, deceive, impersonate, or harm another person
+- Share unlawful content or content that infringes another person's privacy, intellectual-property, or other rights
+- Collect or misuse another person's information without lawful authority
+- Spam, automate abusive activity, interfere with the app, or attempt to bypass its protections
+- Use the app in violation of applicable law or platform rules
 
-Access may be limited when reasonably necessary to protect users, protect the service, investigate abuse, or comply with law.
+You can block a profile locally. To report unlawful or abusive use to the developer, contact [admin@tgtelescan.ru](mailto:admin@tgtelescan.ru). In an emergency, contact the appropriate local authority.
+
+## Local data and deletion
+
+Profiles, photos, Met history, Saved profiles, blocks, and caches are stored on devices as described in the Privacy Policy. Deleting your profile removes associated Telescan data and its signing key from that iPhone but cannot delete copies held by other people. Uninstalling the app removes its local container according to iOS behavior, but iOS may preserve the Keychain signing key unless you delete the profile first.
 
 ## Third-party services
 
-Telescan relies on Telegram, Apple platforms, network and hosting providers, storage providers, and other infrastructure. Their availability and terms are separate from ours.
+Telegram, Apple, and linked websites are independent services governed by their own terms and privacy policies. Their availability and actions are outside Telescan's control. Telescan is not affiliated with or endorsed by Telegram.
 
-Apps distributed through the App Store are also subject to Apple's [Standard Licensed Application End User License Agreement](https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) unless Apple or the provider supplies another applicable agreement.
+An app downloaded from the App Store is also subject to Apple's [Standard Licensed Application End User License Agreement](https://www.apple.com/legal/internet-services/itunes/dev/stdeula/) unless Apple or the provider specifies otherwise.
+
+## Availability and changes
+
+Telescan may be updated, changed, suspended, or discontinued. Device compatibility, radio conditions, iOS behavior, and third-party services may affect availability. To the maximum extent permitted by law, the app is provided **as is** and **as available**, without a guarantee of uninterrupted, error-free, accurate, or secure operation. Mandatory consumer rights remain unaffected.
 
 ## Intellectual property
 
-Telescan software, documentation, branding, visual identity, and service materials are proprietary unless a specific third-party notice says otherwise. Use of the service does not transfer ownership or grant permission to copy, modify, publish, distribute, sublicense, sell, or create derivative works from those materials.
-
-Telegram, Apple, and third-party names and marks belong to their respective owners. Telescan is not endorsed by Telegram or Apple unless those companies expressly state otherwise.
-
-## Availability and warranties
-
-The service may change, be suspended, or stop operating. To the maximum extent permitted by law, Telescan is provided **as is** and **as available**, without guarantees of uninterrupted availability, compatibility, accuracy, security, or fitness for a particular purpose. Mandatory consumer rights remain unaffected.
+The Telescan software, brand, visual design, and documentation belong to their respective rights holders. These Terms do not transfer ownership or grant permission to copy, modify, sell, sublicense, or distribute them except where applicable law or a separate license allows it. Telegram, Apple, and other names and marks belong to their owners.
 
 ## Limitation of liability
 
-To the maximum extent permitted by law, Telescan's developer and maintainers are not liable for indirect, incidental, special, or consequential loss arising from use of or inability to use the service. Liability that cannot legally be excluded remains limited only to the extent permitted by applicable law.
+To the maximum extent permitted by law, Telescan's developer and maintainers are not liable for indirect, incidental, special, or consequential loss arising from use of or inability to use the app. Liability that cannot legally be excluded remains limited only to the extent permitted by applicable law.
 
 ## Changes and contact
 
-These Terms may be updated when the service or legal requirements change. Material changes will be presented through an appropriate service or documentation update. The effective date and published legal content hash identify the current version.
-
-Questions: [admin@tgtelescan.ru](mailto:admin@tgtelescan.ru).
+These Terms may be updated when the app or legal requirements change. The effective date identifies the current version. Questions: [admin@tgtelescan.ru](mailto:admin@tgtelescan.ru).

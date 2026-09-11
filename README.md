@@ -1,24 +1,48 @@
 # Telescan
 
-Telescan is an iOS extension for Telegram. It uses Bluetooth Low Energy to help
-nearby authenticated users exchange the public Telegram profiles they choose
-to share.
+Telescan is a serverless iOS app for finding people nearby and exchanging
+user-created profiles directly between iPhones using Bluetooth Low Energy.
 
 ![Telescan overview](./docs/images/slide3.jpg)
 
 ## How it works
 
-1. Sign in and link a Telegram profile with a one-time bot code.
-2. Allow Bluetooth access.
-3. Open a nearby profile in Telegram or disable scanning at any time.
+1. Create a local profile with a photo, name, Telegram username and optional
+   description.
+2. Allow Bluetooth access and enable scanning.
+3. View people nearby, save profiles you want to remember or open a shared
+   username in Telegram.
 
-Telescan does not read Telegram messages or contacts and does not use GPS.
-Signal strength, approximate distance, 24-hour **Met** history and **Saved**
-profiles remain on the device. Bluetooth discovery is approximate and must not
-be used for navigation or safety decisions.
+No Telescan account is required. Nearby discovery and profile exchange work
+directly between devices without a Telescan backend. Profiles, **Met** history,
+**Saved** profiles and blocks are stored locally.
 
-Requires iOS 17.6+, Telegram and internet access for account and profile
-operations.
+Telescan does not read Telegram messages or contacts and does not use GPS. A
+Telegram username is entered by the user and is not verified by Telescan.
+Nearby users may save information you share. Bluetooth discovery and distance
+estimates are approximate and must not be used for navigation or safety.
+
+Requires iOS 16.0+ and Bluetooth. Internet access is needed only when opening a
+Telegram profile, which is handed off to Telegram or a web browser.
+
+## По-русски
+
+Telescan — serverless-приложение для iOS, которое помогает находить людей
+рядом и напрямую обмениваться созданными пользователями профилями через
+Bluetooth Low Energy.
+
+Пользователь добавляет фотографию, имя, username Telegram и необязательное
+описание. Аккаунт Telescan не требуется: поиск рядом и обмен профилями работают
+напрямую между устройствами без сервера Telescan. Профили, история
+**«Виделись»**, **«Сохранённые»** и блокировки хранятся локально.
+
+Telescan не читает сообщения или контакты Telegram и не использует GPS.
+Username вводится самим пользователем и не проверяется Telescan. Люди рядом
+могут сохранить переданные им данные. Поиск и оценка расстояния по Bluetooth
+приблизительны и не предназначены для навигации или обеспечения безопасности.
+
+Требуются iOS 16.0+ и Bluetooth. Интернет нужен только при открытии профиля
+Telegram — ссылка передаётся приложению Telegram или браузеру.
 
 ## Policies
 

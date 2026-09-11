@@ -4,94 +4,69 @@
 
 **Public page:** [https://tgtelescan.ru/privacy](https://tgtelescan.ru/privacy)
 
-**Effective date:** September 1, 2026
+**Effective date:** September 12, 2026
 
-How Telescan processes account, profile, nearby-discovery, and moderation data.
+How the serverless Telescan app handles profile and nearby-discovery data.
 
 ## Overview
 
-Telescan is an iOS app for discovering nearby users and opening the public Telegram profiles they choose to share. This policy applies to the Telescan app, Telegram bots, API, and supporting service providers. Use of Telescan is also governed by the [Terms of Service](https://tgtelescan.ru/terms).
+Telescan is an iOS app that helps people discover one another nearby and open the Telegram usernames they choose to share. Telescan does not require a Telescan account and does not use a developer-operated backend for its core features. Use of the app is also governed by the [Terms of Service](https://tgtelescan.ru/terms).
 
-## Data we process
+## Your profile
 
-When you use Sign in with Apple, Telescan receives a stable Apple account identifier. If you choose to share them, Telescan may also receive your name and email address or Apple private-relay email. Apple authenticates the primary Telescan account.
+You create your profile on your iPhone by providing a name, Telegram username, optional description, and photo. The photo is selected through the system photo picker or camera and prepared on the device. The Telegram username is entered by you and is not verified by Telegram or Telescan.
 
-When you request a linking code through the Telescan Telegram bot, Telescan may receive your Telegram numeric ID, first name, username, and current public profile photo. Linking codes are temporary and single-use, and at most one active code is kept per account. An HMAC code hash is kept while the code is issued. After successful use, that hash and the consuming device identifier may be retained for up to 30 days solely to make interrupted linking and account merging idempotent and recoverable. The legacy authentication API is prohibited in production.
+The app creates a random Telescan identifier and a signing key for the profile. The key is stored in the iOS Keychain. It helps devices recognize the same local profile and detect altered profile data; it does not prove a person's identity or ownership of a Telegram account.
 
-Telescan creates a random public Telescan ID and per-device session records. The iOS app stores session credentials in the system Keychain. If an Apple-created account is linked to an existing Telegram-created profile, the Telegram profile remains canonical and its public Telescan ID, BIO, and photo are preserved; temporary account data is migrated or revoked under the account-merge workflow.
+## Nearby sharing
 
-You may use the current public Telegram photo or select another image through the iOS camera or system photo picker. Telescan accesses only the selected image, prepares it on the device, and uploads a copy for profile display. You may also add an optional BIO of up to 36 characters.
+When scanning is enabled, your profile identifier, name, Telegram username, description, photo, and signed profile information may be sent directly to nearby devices running Telescan using Bluetooth Low Energy. Recipients can view or save the profile on their devices. Telescan's developer does not receive or relay this exchange.
 
-## Nearby discovery
+Bluetooth signal strength and approximate distance are calculated on the device. They can be delayed, incomplete, or inaccurate. Telescan does not request GPS location and must not be used for navigation, safety, emergency assistance, or proof of identity or presence.
 
-While discoverability is enabled, the app broadcasts your random Telescan ID over Bluetooth Low Energy. Nearby authenticated Telescan devices may use that identifier to request the profile you share. A raw or unresolved Bluetooth identifier is not treated as an authenticated profile and does not create a user-facing encounter notification.
+## Local storage and retention
 
-Bluetooth signal strength, approximate distance, and the nearby-device list are processed on the device. Telescan does not send those measurements to the server. Radio identifiers may still be observed or replayed by devices within range, and Bluetooth must not be treated as precise proof of identity or location.
+Your profile remains on your iPhone until you edit or delete it, or uninstall the app. The profile signing key is stored in the iOS Keychain. Use **Delete profile** before uninstalling to ask Telescan to remove this key; iOS may otherwise preserve Keychain items for a later installation. The **Met** list stores received profile information and the last-seen time for up to 24 hours. **Saved** profiles remain until you remove them. Blocks remain until you unblock the profile or delete your profile.
 
-After a complete authenticated profile leaves the nearby list, the app may keep its public profile snapshot and last-seen time in a device-local **Met** history. This history contains no GPS location or distance measurements, is not uploaded, and is automatically removed after 24 hours. You can clear it earlier; it is also cleared on sign-out, account deletion, or account replacement. Blocking a profile removes it from Met and pending encounter state.
+To make repeat encounters faster, the app may keep a limited device-local cache of signed profiles and photos received nearby. This cache is not synchronized with Telescan's developer. It is replaced as the cache fills and is cleared when you delete your profile or uninstall the app.
 
-When you save another profile, the app keeps its public profile snapshot in a device-local **Saved** list. Saved profiles are not uploaded or synchronized. A blocked saved profile is hidden while the block is active. Saved data is cleared on sign-out, account deletion, or account replacement.
+Another person may retain a profile you shared, including in Saved, screenshots, or other copies. Editing or deleting your profile on your iPhone cannot remotely remove copies already received by another device.
 
-## Reports, blocks, and moderation
+## Data the developer does not collect through the app
 
-A report stores identifiers for the reporting and reported accounts, an optional comment of up to 500 characters, relevant profile context, timestamps, review status, and append-only moderation events. The reported user is not shown the reporter's identity through the product.
+- Telescan accounts, passwords, Sign in with Apple data, or Telegram numeric IDs
+- Names, Telegram usernames, descriptions, or profile photos
+- GPS location, movement history, Bluetooth signal measurements, or nearby-device history
+- Telegram messages or contacts
+- Advertising identifiers, advertising data, or third-party behavioral analytics
 
-When a report is created, Telescan attempts to copy the reported profile photo into a separate moderation-evidence object. Replacing a live profile photo or deleting the account does not delete that evidence before the report retention period ends. If no photo is available or the copy fails, the report records that evidence status explicitly instead of representing a broken URL as a snapshot.
+The Telescan app does not send the above information to the developer or third-party analytics services. Apple may provide the developer with aggregated App Store and diagnostics information under Apple's own terms and your device settings.
 
-When you block a profile, Telescan stores the relationship and limited profile context needed to display and manage the block. Blocking hides profile access in both directions until it is removed and removes the profile from device-local encounter state.
+If you contact support by email, the developer and the email provider will process the information you voluntarily include in that message for the purpose of answering you and maintaining necessary correspondence.
 
-## Operational request information
+## Other people and third-party services
 
-Service providers may process IP address, time, requested host and path, response status, user agent, and performance or forwarding metadata needed to deliver, protect, troubleshoot, and maintain Telescan. This information is not used for advertising or behavioral profiling.
+People nearby who receive your profile are independent recipients of the information you choose to share. Consider the surroundings and profile contents before enabling scanning.
 
-## Data we do not collect
+When you choose to open a Telegram username, the app hands the link to Telegram or the web browser. Telegram, Apple, and other third-party services operate under their own terms and privacy policies. Telescan is not affiliated with or endorsed by Telegram.
 
-- GPS location or server-side movement history
-- Telegram messages, contacts, or passwords
-- Advertising identifiers
-- Precise Bluetooth-distance history on the server
-- Third-party advertising or behavioral analytics data
+## Security and limitations
 
-## How data is used and shared
+Signed profiles help detect modification and provide a stable local identifier, but nearby identifiers and profile transmissions may still be observed, copied, replayed, or impersonated by devices in radio range. No technical system guarantees absolute security. Keep iOS updated and share only information you are comfortable showing to people nearby.
 
-Telescan uses data to create and authenticate accounts, show shared profiles, operate nearby discovery, maintain device-local lists, manage photos and sessions, process reports and blocks, prevent abuse, provide support, and comply with legal obligations. Telescan does not sell personal data.
+## Your choices and deletion
 
-Information may be disclosed to authenticated Telescan users who receive or already know a public Telescan ID; to Telegram and Apple as required by the features you use; to hosting, network, storage, backup, and other infrastructure providers; to authorized moderators; or when required by law.
+- Turn scanning off at any time
+- Edit your name, Telegram username, description, or photo
+- Clear the Met history
+- Save or remove received profiles
+- Block or unblock a profile on this device
+- Delete your local Telescan profile and associated app data
 
-Providers may process information in Russia, the European Economic Area, and other jurisdictions in which Telegram, Apple, or Telescan providers operate. Data-protection rules may differ between jurisdictions.
+To delete your data, open Profile, choose **Delete profile**, and confirm. This clears your profile, local profile cache, Met history, Saved profiles, and blocks from that iPhone. The action cannot recall copies previously received by other people and does not delete or modify your Telegram or Apple account.
 
-## Security and retention
+## Children, changes, and contact
 
-Telescan uses encrypted network transport, verified Apple identity tokens, temporary linking codes, per-device sessions, system Keychain storage, restricted service access, backups, and operational security controls. No system can guarantee absolute security.
+Telescan is not intended for children under 13. A higher minimum age may apply under local law or third-party platform rules.
 
-The live account record and current profile photo remain while the account is active. Linking codes and sessions have limited lifetimes. Limited account-merge and account-deletion journals, including affected account identifiers, authorization-proof and cleanup metadata, and an affected photo URL, remain while an operation is incomplete and for up to 30 days after completion. Blocks remain until removed or account deletion. Pending reports remain while reviewed; resolved or dismissed reports and their moderation evidence are scheduled for deletion after 180 days. Backup residuals may remain until the applicable backup rotation expires.
-
-Device-local Met entries are removed after 24 hours. Device-local Saved entries remain until removed by the user or until sign-out, account deletion, or account replacement.
-
-## Account and data deletion
-
-Open your profile in the app, choose **Delete account**, and confirm. Telescan revokes active sessions and removes the live account, linking codes, stored live profile photos, blocks, and local account data and caches. Direct report relations are removed; limited report snapshots and moderation evidence may remain for the 180-day moderation period. Backup residuals expire through normal backup rotation.
-
-Deletion cannot be undone and does not delete or modify your Apple or Telegram account.
-
-## Your choices and rights
-
-- Disable discoverability
-- Clear device-local encounter history
-- Save or remove local public profile snapshots
-- Replace or remove your BIO and shared photo
-- Report, block, or unblock profiles
-- Sign out the current device
-- Delete your Telescan account and all its sessions
-
-Depending on applicable law, you may also have rights to request access, correction, deletion, restriction, portability, or objection regarding personal data. Contact [admin@tgtelescan.ru](mailto:admin@tgtelescan.ru).
-
-## Children
-
-Telescan is not intended for children under 13. A higher minimum age may apply where required by local law or Apple, Telegram, or other platform rules.
-
-## Changes and contact
-
-This policy may be updated when the service or legal requirements change. The effective date and published legal content hash identify the current version.
-
-Privacy questions and requests: [admin@tgtelescan.ru](mailto:admin@tgtelescan.ru).
+This policy may be updated if the app or legal requirements change. The effective date identifies the current version. Privacy questions: [admin@tgtelescan.ru](mailto:admin@tgtelescan.ru).
